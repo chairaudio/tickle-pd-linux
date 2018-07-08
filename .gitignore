@@ -1,0 +1,7 @@
+build
+subprojects/*
+!subprojects/*.wrap
+.vscode
+gitversion.h.kdev4
+.kdev4/
+*.kdev4
