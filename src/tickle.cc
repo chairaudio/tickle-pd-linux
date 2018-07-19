@@ -240,11 +240,11 @@ static void tickle_dsp_setup(tickle_t* self, t_signal** sp) {
 }
 
 void tickle_dim(tickle_t* self, float value) {
-    // shared_device_manager.dim(value);
+    fmt::print("{} {}\n", __PRETTY_FUNCTION__, value);    
+    shared_device_manager.dim(value);
 }
 
 void tickle_led(tickle_t* self, float index, float r, float g, float b) {
-    fmt::print("{} {} {} {} {}\n", __PRETTY_FUNCTION__, index, r, g, b);
     uint32_t color = b * 255;
     color <<= 8;
     color += int(r * 255);
@@ -254,7 +254,7 @@ void tickle_led(tickle_t* self, float index, float r, float g, float b) {
 }
 
 void tickle_tilde_setup(void) {
-    fmt::print("{}\n", __PRETTY_FUNCTION__);
+    // fmt::print("{}\n", __PRETTY_FUNCTION__);
 
     tickle_tilde_class = reinterpret_cast<t_class*>(class_new(
         gensym("tickle~"), (t_newmethod)tickle_new, (t_method)tickle_delete,
