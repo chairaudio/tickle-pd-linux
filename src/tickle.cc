@@ -63,11 +63,6 @@ typedef struct _tickle {
     t_outlet* audio_out;
     t_outlet* data_out;
 
-    t_inlet* dim_in;
-    t_inlet* led_1_in;
-    t_inlet* led_2_in;
-    t_inlet* led_3_in;
-
     t_clock* poll_clock;
     bool is_active;
     bool keep_polling;
@@ -100,11 +95,6 @@ static void* tickle_new(t_symbol* s, int argc, t_atom* argv) {
     auto& x_obj = self->x_obj;
     self->audio_out = outlet_new(&x_obj, &s_signal);
     self->data_out = outlet_new(&x_obj, 0);
-
-    self->dim_in =
-        inlet_new(&x_obj, &tickle_tilde_class, &s_float, gensym("dim"));
-    self->led_1_in =
-        inlet_new(&x_obj, &tickle_tilde_class, &s_float, gensym("led1"));
 
     self->poll_clock = clock_new(&x_obj, (t_method)tickle_pollbang);
     self->is_active = false;
@@ -250,11 +240,17 @@ static void tickle_dsp_setup(tickle_t* self, t_signal** sp) {
 }
 
 void tickle_dim(tickle_t* self, float value) {
-    shared_device_manager.dim(value);
+    // shared_device_manager.dim(value);
 }
 
-void tickle_led1(tickle_t* self, float value) {
-    shared_device_manager.set_color(0, value);
+void tickle_led(tickle_t* self, float index, float r, float g, float b) {
+    fmt::print("{} {} {} {} {}\n", __PRETTY_FUNCTION__, index, r, g, b);
+    uint32_t color = b;
+    color <<= 8;
+    color += int(r);
+    color <<= 8;
+    color += int(g);
+    shared_device_manager.set_color(index, color);
 }
 
 void tickle_tilde_setup(void) {
@@ -272,8 +268,8 @@ void tickle_tilde_setup(void) {
                     (t_atomtype)0);
     class_addmethod(tickle_tilde_class, (t_method)tickle_dim, gensym("dim"),
                     A_FLOAT, (t_atomtype)0);
-    class_addmethod(tickle_tilde_class, (t_method)tickle_led1, gensym("led1"),
-                    A_FLOAT, (t_atomtype)0);
+    class_addmethod(tickle_tilde_class, (t_method)tickle_led, gensym("led"),
+                    A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, (t_atomtype)0);
     std::this_thread::sleep_for(1s);
 
     print_external_info();
