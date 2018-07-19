@@ -46,17 +46,17 @@
 #X msg 758 23 \; pd dsp 0 \;;
 #X obj 62 447 *~ 4;
 #X obj 473 23 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 -4034
--1 -1 0 1;
+-1 -1 9600 1;
 #X obj 517 23 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 -4160
--1 -1 0 1;
+-1 -1 6400 1;
 #X obj 426 23 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 -258113
--1 -1 800 1;
+-1 -1 5900 1;
 #X obj 427 186 t b f;
 #X obj 512 187 t b f;
 #X obj 469 187 t b f;
 #X obj 371 236 pack f f f f;
 #X obj 345 154 hradio 15 1 0 3 empty empty empty 0 -8 0 10 -262144
--1 -1 0;
+-1 -1 2;
 #X msg 378 302 led \$1 \$2 \$3 \$4;
 #X connect 0 0 14 0;
 #X connect 1 0 2 0;

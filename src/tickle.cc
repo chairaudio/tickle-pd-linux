@@ -245,11 +245,11 @@ void tickle_dim(tickle_t* self, float value) {
 
 void tickle_led(tickle_t* self, float index, float r, float g, float b) {
     fmt::print("{} {} {} {} {}\n", __PRETTY_FUNCTION__, index, r, g, b);
-    uint32_t color = b;
+    uint32_t color = b * 255;
     color <<= 8;
-    color += int(r);
+    color += int(r * 255);
     color <<= 8;
-    color += int(g);
+    color += int(g * 255);
     shared_device_manager.set_color(index, color);
 }
 
