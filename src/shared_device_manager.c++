@@ -138,3 +138,20 @@ void SharedDeviceManager::dispose_client(ClientHandle client) {
             return client.get() == client_candidate.get();
         });
 }
+
+void SharedDeviceManager::set_color(uint32_t index, uint32_t color) {
+    // fmt::print("{}:{}\n", idx, color);
+
+    MiniBuffer buffer;
+    uint32_t* index_ptr = reinterpret_cast<uint32_t*>(&buffer.data[0]);
+    uint32_t* color_ptr = reinterpret_cast<uint32_t*>(&buffer.data[4]);
+    *index_ptr = index;
+    *color_ptr = color;
+    auto result = ioctl(_kmod_fd, TICKLE_IOC_SET_COLOR, &buffer);
+    fmt::print("{} {} | {} {}\n", __PRETTY_FUNCTION__, result, *index_ptr,
+               *color_ptr);
+}
+
+void SharedDeviceManager::dim(uint32_t value) {
+    set_color(3, value);
+}

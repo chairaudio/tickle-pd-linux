@@ -21,6 +21,9 @@ class tickle::SharedDeviceManager {
     ClientHandle create_client();
     void dispose_client(ClientHandle);
 
+    void set_color(uint32_t, uint32_t);
+    void dim(uint32_t);
+
   private:
     std::unique_ptr<Device> _device{nullptr};
     void _on_device_connection();

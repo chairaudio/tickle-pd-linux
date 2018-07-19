@@ -2,6 +2,11 @@
 
 #include "./isoc_frame.h"
 
+#define MINI_BUFFER_SIZE 16
+typedef struct MiniBuffer_ {
+    uint8_t data[MINI_BUFFER_SIZE];
+} MiniBuffer;
+
 #define SMALL_BUFFER_SIZE 32
 #define SMALL_BUFFER_MAX_DATA_BYTES 30
 typedef struct SmallBuffer_ {
@@ -22,3 +27,5 @@ typedef struct BigBuffer_ {
 #define TICKLE_IOC_CLAIM_DEVICE _IOR(TICKLE_IOC_MAGIC, 3, SmallBuffer)
 #define TICKLE_IOC_GET_DEVICE_VERSION _IOR(TICKLE_IOC_MAGIC, 4, SmallBuffer)
 #define TICKLE_IOC_GET_DEVICE_SERIAL _IOR(TICKLE_IOC_MAGIC, 5, SmallBuffer)
+
+#define TICKLE_IOC_SET_COLOR _IOW(TICKLE_IOC_MAGIC, 6, MiniBuffer)
