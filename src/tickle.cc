@@ -56,7 +56,6 @@ using tickle::ClientHandle;
 #include "./gitversion.h"
 
 static t_class* tickle_tilde_class;
-static int tickle_count = 0;
 
 typedef struct _tickle {
     t_object x_obj;
@@ -69,12 +68,6 @@ typedef struct _tickle {
 
     ClientHandle client;
 
-    bool debug;
-    t_outlet* raw_pos_x_out;
-    t_outlet* raw_pos_y_out;
-    t_outlet* raw_touch_out;
-
-    int number;
 } tickle_t;
 
 /* -------------- forward decls ---------------- */
@@ -86,11 +79,9 @@ static void tickle_toggle_polling(tickle_t*, float);
 /* -------------- structors ---------------- */
 
 static void* tickle_new(t_symbol* s, int argc, t_atom* argv) {
-    fmt::print("{} {}\n", __PRETTY_FUNCTION__, argc);
+    // fmt::print("{} {}\n", __PRETTY_FUNCTION__, argc);
 
     tickle_t* self = (tickle_t*)pd_new(tickle_tilde_class);
-    self->number = ++tickle_count;
-    self->debug = (argc > 0);
 
     auto& x_obj = self->x_obj;
     self->audio_out = outlet_new(&x_obj, &s_signal);
@@ -102,17 +93,11 @@ static void* tickle_new(t_symbol* s, int argc, t_atom* argv) {
 
     self->client = shared_device_manager.create_client();
 
-    if (self->debug) {
-        self->raw_pos_x_out = outlet_new(&x_obj, &s_float);
-        self->raw_pos_y_out = outlet_new(&x_obj, &s_float);
-        self->raw_touch_out = outlet_new(&x_obj, &s_float);
-    }
-
     return (void*)self;
 }
 
 void tickle_delete(tickle_t* self) {
-    fmt::print("{}\n", __PRETTY_FUNCTION__);
+    // fmt::print("{}\n", __PRETTY_FUNCTION__);
     shared_device_manager.dispose_client(self->client);
     tickle_toggle_polling(self, 0);
     std::this_thread::sleep_for(5ms);
@@ -240,7 +225,7 @@ static void tickle_dsp_setup(tickle_t* self, t_signal** sp) {
 }
 
 void tickle_dim(tickle_t* self, float value) {
-    fmt::print("{} {}\n", __PRETTY_FUNCTION__, value);    
+    // fmt::print("{} {}\n", __PRETTY_FUNCTION__, value);    
     shared_device_manager.dim(value);
 }
 

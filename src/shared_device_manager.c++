@@ -33,18 +33,18 @@ SharedDeviceManager::SharedDeviceManager() {
 }
 
 SharedDeviceManager::~SharedDeviceManager() {
-    fmt::print("{}\n", __PRETTY_FUNCTION__);
+    // fmt::print("{}\n", __PRETTY_FUNCTION__);
 
     if (_keep_running) {
         _keep_running = false;
         _device_thread.join();
     }
 
-    fmt::print("end {}\n", __PRETTY_FUNCTION__);
+    // fmt::print("end {}\n", __PRETTY_FUNCTION__);
 }
 
 void SharedDeviceManager::_spawn() {
-    fmt::print("{}\n", __PRETTY_FUNCTION__);
+    // fmt::print("{}\n", __PRETTY_FUNCTION__);
     _keep_running = true;
 
     do {
@@ -86,7 +86,7 @@ void SharedDeviceManager::_spawn() {
 }
 
 void SharedDeviceManager::_on_device_connection() {
-    fmt::print("{}\n", __PRETTY_FUNCTION__);
+    // fmt::print("{}\n", __PRETTY_FUNCTION__);
     _device->set_connection(_kmod_fd);
     for (auto& client : _clients) {
         client->notify_device_was_connected(DeviceHandle{_device.get()});
@@ -94,7 +94,7 @@ void SharedDeviceManager::_on_device_connection() {
 }
 
 void SharedDeviceManager::_on_device_disconnection() {
-    fmt::print("{}\n", __PRETTY_FUNCTION__);
+    // fmt::print("{}\n", __PRETTY_FUNCTION__);
     _device->set_connection(-1);
     for (auto& client : _clients) {
         client->notify_device_was_disconnected();
@@ -102,7 +102,7 @@ void SharedDeviceManager::_on_device_disconnection() {
 }
 
 void SharedDeviceManager::_connect_to_kmod() {
-    fmt::print("{}\n", __PRETTY_FUNCTION__);
+    // fmt::print("{}\n", __PRETTY_FUNCTION__);
     fs::path tickle_character_device{"/dev/tickle"};
 
     if (not fs::exists(tickle_character_device)) {
@@ -148,8 +148,10 @@ void SharedDeviceManager::set_color(uint32_t index, uint32_t color) {
     *index_ptr = index;
     *color_ptr = color;
     auto result = ioctl(_kmod_fd, TICKLE_IOC_SET_COLOR, &buffer);
-    fmt::print("{} {} | {} {}\n", __PRETTY_FUNCTION__, result, *index_ptr,
-               *color_ptr);
+    if (result != 0) {
+        fmt::print("{} {} | {} {}\n", __PRETTY_FUNCTION__, result, *index_ptr,
+                *color_ptr);
+    }
 }
 
 void SharedDeviceManager::dim(uint32_t value) {
