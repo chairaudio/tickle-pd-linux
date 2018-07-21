@@ -163,7 +163,7 @@ static void tickle_bang(tickle_t* self) {
         }
         auto button = change.value();
         std::array<t_atom, 2> button_out;
-        SETSYMBOL(&button_out[0], button.index ? gensym("down") : gensym("up"));
+        SETSYMBOL(&button_out[0], button.index ? gensym("up") : gensym("down"));
         SETFLOAT(&button_out[1], button.value);
         outlet_anything(self->data_out, gensym("button"), 2, button_out.data());
     }
