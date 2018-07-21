@@ -6,3 +6,4 @@ gitversion.h.kdev4
 .kdev4/
 *.kdev4
 .DS_Store
+.directory
