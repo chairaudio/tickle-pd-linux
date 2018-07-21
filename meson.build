@@ -16,7 +16,7 @@ shared_module('tickle~',
   'src/client.c++',
   'src/shared_device_manager.c++',
   install : true,
-  install_dir : '/home/@0@/Desktop/tickle-pd/bin'.format(run_command('whoami').stdout().strip()),
+  install_dir : '/home/@0@/pd-externals'.format(run_command('whoami').stdout().strip()),
   name_suffix : 'pd_linux',
   name_prefix : '',
   dependencies : [
