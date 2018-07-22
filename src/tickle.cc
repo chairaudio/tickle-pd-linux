@@ -53,7 +53,11 @@ static SharedDeviceManager shared_device_manager;
 using tickle::Client;
 using tickle::ClientHandle;
 
+#if __has_include("./gitversion.h")
 #include "./gitversion.h"
+#else
+#define GITVERSION "NaN"
+#endif
 
 static t_class* tickle_tilde_class;
 
@@ -225,7 +229,7 @@ static void tickle_dsp_setup(tickle_t* self, t_signal** sp) {
 }
 
 void tickle_dim(tickle_t* self, float value) {
-    // fmt::print("{} {}\n", __PRETTY_FUNCTION__, value);    
+    // fmt::print("{} {}\n", __PRETTY_FUNCTION__, value);
     shared_device_manager.dim(value);
 }
 
