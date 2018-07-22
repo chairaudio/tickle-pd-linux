@@ -61,7 +61,7 @@ Client::FrameChanges Client::compare_frames() {
                 clockwise = not clockwise;
             }
             changes.rotary[rotary_index] = {
-                .index = rotary_index, .value = int8_t(clockwise ? 1 : -1)};
+                .index = rotary_index, .value = int8_t(clockwise ? -1 : 1)};
         } else {
             changes.rotary[rotary_index] = {};
         }
@@ -84,29 +84,27 @@ Client::FrameChanges Client::compare_frames() {
     return changes;
 }
 
-void Client::prepare_dsp(float sample_rate, int buffer_size)
-{
+void Client::prepare_dsp(float sample_rate, int buffer_size) {
     fmt::print("{} {} {}\n", __PRETTY_FUNCTION__, sample_rate, buffer_size);
     _dsp_state = DSPState::kWillStart;
 }
 
-void Client::_copy_samples()
-{
+void Client::_copy_samples() {
     if (_dsp_state == DSPState::kUndefined) {
         return;
     }
     auto& buffer = _audio_buffer[_write_chunk % n_chunks];
-    memcpy(buffer.data(), _current_frame.samples, samples_per_chunk * sizeof(int16_t));
-    ++_write_chunk;    
+    memcpy(buffer.data(), _current_frame.samples,
+           samples_per_chunk * sizeof(int16_t));
+    ++_write_chunk;
     // fmt::print("{} {}\n", __PRETTY_FUNCTION__, _current_frame.n_samples);
 }
 
 void Client::fill_audio_buffer(float* out, uint32_t n_samples) {
-
     if (_dsp_state == DSPState::kUndefined) {
         return;
     }
-    
+
     if (_dsp_state == DSPState::kWillStart) {
         _write_chunk = 0;
         _read_chunk = _write_chunk - n_chunks;
@@ -114,24 +112,19 @@ void Client::fill_audio_buffer(float* out, uint32_t n_samples) {
     }
 
     // fmt::print("{} {}\n", __PRETTY_FUNCTION__, n_samples);
-    
 
-    
     for (uint32_t sample_idx = 0; sample_idx < n_samples; sample_idx += 2) {
         if (_read_index % samples_per_chunk == 0) {
             ++_read_chunk;
         }
-        auto& buffer = (_read_chunk >= 0 && _device_handle) ? _audio_buffer[_read_chunk % n_chunks]
-                                        : _silence_buffer;
+        auto& buffer = (_read_chunk >= 0 && _device_handle)
+                           ? _audio_buffer[_read_chunk % n_chunks]
+                           : _silence_buffer;
 
-        float sample = static_cast<float>(buffer[_read_index % samples_per_chunk]) / 32768.f;
+        float sample =
+            static_cast<float>(buffer[_read_index % samples_per_chunk]) /
+            32768.f;
         out[sample_idx] = out[sample_idx + 1] = sample;
         ++_read_index;
-    }    
+    }
 }
-
-
-
-
-
-
