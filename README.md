@@ -2,32 +2,22 @@
 
 python3, fmt, meson, ninja
 
-
-# meson / ninja
-
-## configure
+# configure
 
 $ meson build
 
-### set installation directory option at setup-time
+## set installation directory option at setup-time
 
 $ meson build -Dinstall_dir=/my/install/dir
 
-### set installation directory option later
+## set installation directory option later
 
 $ meson configure build -Dinstall_dir=/my/install/dir
 
-## build
+# build
 
 $ ninja -C build
 
-## install
+# install
 
 $ ninja -C build install
-
-
-# melmak
-
-## configure, build and install
-
-$ ./melmak.py

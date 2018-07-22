@@ -13,6 +13,12 @@ stdcppfs_dep = meson.get_compiler('cpp').find_library('stdc++fs',
 
 install_dir = get_option('install_dir')
 
+version_data = configuration_data()
+version_data.set('version', run_command('git', 'describe').stdout().strip())
+configure_file(input : './src/gitversion.h.in',
+               output : 'gitversion.h',
+               configuration : version_data)
+
 shared_module('tickle~',
   'src/tickle.cc',
   'src/device.c++',
