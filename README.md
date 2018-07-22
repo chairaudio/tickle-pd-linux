@@ -1,6 +1,6 @@
 # prerequisites
 
-python3, meson, ninja
+meson
 
 # configure
 
