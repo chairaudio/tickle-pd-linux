@@ -1,7 +1,8 @@
 project('tickle-pd', 'cpp',
   default_options : [
     'cpp_std=c++1z',
-    'default_library=static'
+    'default_library=static',
+    'install_dir=/home/@0@/pd-externals'.format(run_command('whoami').stdout().strip())
   ]
 )
 
@@ -10,7 +11,7 @@ stdcppfs_dep = meson.get_compiler('cpp').find_library('stdc++fs',
   dirs : ['/usr/lib/gcc/x86_64-linux-gnu/7/']
 )
 
-install_directory = '/home/@0@/pd-externals'.format(run_command('whoami').stdout().strip())
+install_dir = get_option('install_dir')
 
 shared_module('tickle~',
   'src/tickle.cc',
@@ -18,7 +19,7 @@ shared_module('tickle~',
   'src/client.c++',
   'src/shared_device_manager.c++',
   install : true,
-  install_dir : install_directory,
+  install_dir : install_dir,
   name_suffix : 'pd_linux',
   name_prefix : '',
   dependencies : [
@@ -28,5 +29,8 @@ shared_module('tickle~',
 
 install_data(
   'data/tickle~-help.pd',
-  install_dir : install_directory
+  install_dir : install_dir
 )
+
+
+

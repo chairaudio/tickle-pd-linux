@@ -1,0 +1,4 @@
+option('install_dir',
+  type : 'string',
+  description : 'Installation directory option'
+)
