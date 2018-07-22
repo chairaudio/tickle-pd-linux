@@ -3,11 +3,7 @@
 python3, fmt, meson, ninja
 
 
-# configure and build
+# configure, build and install
 
 $ ./melmak.py
-
-# install into ~/pd-externals/
-
-$ ninja -C build install
 

@@ -6,26 +6,28 @@ from subprocess import call, check_output
 
 current_version = ""
 
+
 def build():
     # configure?
     if not os.path.isdir("./build"):
-        call(["env", "CXX=g++-7", "meson", "build"])    
+        call(["env", "CXX=g++-7", "meson", "build"])
 
     # recreate version info
     # todo: check if gitversion differs from current_version
     gitversion_h = open("./src/gitversion.h", "w")
     gitversion_h.write("#define GITVERSION \"{}\"".format(current_version))
-    gitversion_h.close()    
+    gitversion_h.close()
 
     # build
-    call(["ninja", "-C", "build"])
-    
+    call(["ninja", "-C", "build", "install"])
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Melmak is a metamaker.')
     parser.add_argument('--tag', nargs='?', default='*',
                         help='tag a release')
-    args = parser.parse_args()    
-    
+    args = parser.parse_args()
+
     # tag it?
     current_version = check_output(["git", "describe"]).decode().strip()
     new_version = None
