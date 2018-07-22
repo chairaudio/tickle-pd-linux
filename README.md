@@ -1,6 +1,6 @@
-# prerequesites
+# prerequisites
 
-python3, fmt, meson, ninja
+python3, meson, ninja
 
 # configure
 
