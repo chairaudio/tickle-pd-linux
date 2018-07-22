@@ -135,11 +135,6 @@ static void print_external_info() {
 
 static void tickle_bang(tickle_t* self) {
     auto changes = self->client->compare_frames();
-    if (changes.touch) {
-        std::array<t_atom, 1> touch_out;
-        SETFLOAT(&touch_out[0], changes.touch.value() ? 1.0 : 0.0);
-        outlet_anything(self->data_out, gensym("touch"), 1, touch_out.data());
-    }
 
     if (changes.position) {
         auto position = changes.position.value();
@@ -148,6 +143,12 @@ static void tickle_bang(tickle_t* self) {
         SETFLOAT(&position_out[1], position.x);
         SETFLOAT(&position_out[2], position.y);
         outlet_anything(self->data_out, gensym("pos"), 3, position_out.data());
+    }
+
+    if (changes.touch) {
+        std::array<t_atom, 1> touch_out;
+        SETFLOAT(&touch_out[0], changes.touch.value() ? 1.0 : 0.0);
+        outlet_anything(self->data_out, gensym("touch"), 1, touch_out.data());
     }
 
     for (auto change : changes.rotary) {
