@@ -2,7 +2,7 @@ build
 subprojects/*
 !subprojects/*.wrap
 .vscode
-gitversion.h.kdev4
+src/gitversion.h
 .kdev4/
 *.kdev4
 .DS_Store
