@@ -58,6 +58,7 @@ void SharedDeviceManager::_spawn() {
 
     // fmt::print("start streaming\n");
     isoc_frame previous_frame;
+    bool did_post_error{false};
     while (_keep_running) {
         isoc_frame current_frame;
         auto result = ioctl(_kmod_fd, TICKLE_IOC_READ_FRAME, &current_frame);
@@ -65,12 +66,18 @@ void SharedDeviceManager::_spawn() {
             fmt::print("err: TICKLE_IOC_READ_FRAME failed {}\n", result);
             if (_device->is_connected()) {
                 _on_device_disconnection();
+                did_post_error = false;
+            }
+            if (not did_post_error) {
+                did_post_error = true;
+                error("please connect your tickle device");
             }
             std::this_thread::sleep_for(1s);
             continue;
         } else {
             if (not _device->is_connected()) {
                 _on_device_connection();
+                // continue;
             }
         }
         if (current_frame.number == previous_frame.number) {
