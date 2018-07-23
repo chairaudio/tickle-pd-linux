@@ -106,7 +106,15 @@ void SharedDeviceManager::_connect_to_kmod() {
     fs::path tickle_character_device{"/dev/tickle"};
 
     if (not fs::exists(tickle_character_device)) {
+        static bool did_post_error{false};
         fmt::print("{} does not exist\n", tickle_character_device);
+        if (not did_post_error) {
+            did_post_error = true;
+            error("tickle kernel module is not loaded");
+            error(
+                "download and install hardware driver from "
+                "https://chair.audio");
+        }
         return;
     }
 
@@ -150,7 +158,7 @@ void SharedDeviceManager::set_color(uint32_t index, uint32_t color) {
     auto result = ioctl(_kmod_fd, TICKLE_IOC_SET_COLOR, &buffer);
     if (result != 0) {
         fmt::print("{} {} | {} {}\n", __PRETTY_FUNCTION__, result, *index_ptr,
-                *color_ptr);
+                   *color_ptr);
     }
 }
 
