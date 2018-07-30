@@ -39,13 +39,14 @@ Client::FrameChanges Client::compare_frames() {
         changes.touch = {};
     }
 
+    // workaround
+    // override with previous position?
+    if (current.x == 255 || current.y == 255) {
+        current.x = _previous_frame.x;
+        current.y = _previous_frame.y;
+    }
     if (current.x != _previous_frame.x || current.y != _previous_frame.y ||
         changes.touch) {
-        // override with previous position?
-        if (current.x == 255 || current.y == 255) {
-            current.x = _previous_frame.x;
-            current.y = _previous_frame.y;
-        }
         changes.position = {current.x / 255.f, current.y / 255.f};
     } else {
         changes.position = {};

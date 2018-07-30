@@ -58,6 +58,7 @@ void SharedDeviceManager::_spawn() {
 
     // fmt::print("start streaming\n");
     isoc_frame previous_frame;
+    bool did_post_error{false};
     while (_keep_running) {
         isoc_frame current_frame;
         auto result = ioctl(_kmod_fd, TICKLE_IOC_READ_FRAME, &current_frame);
@@ -65,12 +66,18 @@ void SharedDeviceManager::_spawn() {
             fmt::print("err: TICKLE_IOC_READ_FRAME failed {}\n", result);
             if (_device->is_connected()) {
                 _on_device_disconnection();
+                did_post_error = false;
+            }
+            if (not did_post_error) {
+                did_post_error = true;
+                error("please connect your tickle device");
             }
             std::this_thread::sleep_for(1s);
             continue;
         } else {
             if (not _device->is_connected()) {
                 _on_device_connection();
+                // continue;
             }
         }
         if (current_frame.number == previous_frame.number) {
@@ -106,7 +113,15 @@ void SharedDeviceManager::_connect_to_kmod() {
     fs::path tickle_character_device{"/dev/tickle"};
 
     if (not fs::exists(tickle_character_device)) {
+        static bool did_post_error{false};
         fmt::print("{} does not exist\n", tickle_character_device);
+        if (not did_post_error) {
+            did_post_error = true;
+            error("tickle kernel module is not loaded");
+            error(
+                "download and install hardware driver from "
+                "https://chair.audio");
+        }
         return;
     }
 
@@ -150,7 +165,7 @@ void SharedDeviceManager::set_color(uint32_t index, uint32_t color) {
     auto result = ioctl(_kmod_fd, TICKLE_IOC_SET_COLOR, &buffer);
     if (result != 0) {
         fmt::print("{} {} | {} {}\n", __PRETTY_FUNCTION__, result, *index_ptr,
-                *color_ptr);
+                   *color_ptr);
     }
 }
 
