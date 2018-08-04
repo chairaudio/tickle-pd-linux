@@ -1,4 +1,4 @@
-#N canvas 556 80 592 866 10;
+#N canvas 548 80 600 866 10;
 #X obj 19 461 cnv 15 540 40 empty empty empty 20 12 0 14 -103858 -66577
 0;
 #X obj 19 506 cnv 15 540 40 empty empty empty 20 12 0 14 -161266 -66577
@@ -33,7 +33,7 @@ https://chair.audio ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 0;
 #X obj 19 597 cnv 15 540 30 empty empty empty 20 12 0 14 -262130 -66577
 0;
-#X obj 31 42 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0 1
+#X obj 31 42 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1 1
 ;
 #X obj 31 785 dac~;
 #X floatatom 70 433 5 0 0 0 - - -, f 5;
@@ -53,7 +53,7 @@ https://chair.audio ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #X obj 136 141 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
 #X obj 69 640 vsl 15 59 -30 30 0 0 empty empty dB_Gain 0 -9 0 10 -262144
--1 -1 0 1;
+-1 -1 2600 1;
 #X obj 31 754 hip~ 4;
 #X text 82 753 It's good practice to protect against possible DC-offset.
 ;
@@ -90,8 +90,8 @@ the Tickle and sometimes issues with feedback occur.;
 #X connect 8 0 1 0;
 #X connect 9 0 1 0;
 #X connect 10 0 8 1;
-#X restore 31 572 pd feedback-cancellation;
-#N canvas 1156 62 479 815 diagnostic 0;
+#X restore 31 571 pd feedback-cancellation;
+#N canvas 1156 131 479 815 diagnostic 1;
 #X obj 18 15 inlet~;
 #X obj 20 725 outlet~;
 #N canvas 1 681 450 300 (subpatch) 0;
@@ -217,13 +217,10 @@ isn't \, hence the discrepancy between the scaling of the two.;
 #X connect 22 0 21 0;
 #X connect 23 0 21 0;
 #X connect 24 0 21 0;
-#X restore 32 477 pd diagnostic;
-#X obj 172 554 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X restore 32 475 pd diagnostic;
+#X obj 172 553 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
 #X obj 31 521 lop~ 10000;
-#X text 129 511 The internal samplingrate is 24 kHz. It is upsampled
-to 48 kHz. To smooth the resulting artefacts use a low-pass filter
-;
 #X text 133 465 Here you will find some tools to visualize the audio
 output of the object for better undserstanding and debugging.;
 #X text 191 559 Live situations or speakers on the same surface can
@@ -232,25 +229,23 @@ cause feedback. A cheap method to remove it is within., f 54;
 #X text 110 600 <--- here is where the sound synthesis would happen
 (see examples), f 68;
 #X obj 31 127 tickle~;
-#N canvas 0 579 432 210 slidr 0;
+#N canvas 2454 390 432 210 slidr 0;
 #X obj 105 121 hsl 46 15 0 1 0 0 empty empty empty -2 -8 0 10 -262144
--1 -1 3000 1;
+-1 -1 375 1;
 #X obj 175 3 inlet;
-#X obj 210 73 + 1;
-#X obj 175 73 f;
+#X obj 175 72 + 1;
+#X obj 175 46 f;
 #X obj 175 24 t b f;
-#X obj 242 74 mod 24;
-#X obj 210 102 / 24;
-#X obj 225 48 * -1;
+#X obj 213 71 mod 24;
+#X obj 175 96 / 24;
 #X connect 1 0 4 0;
 #X connect 2 0 5 0;
 #X connect 2 0 6 0;
 #X connect 3 0 2 0;
 #X connect 4 0 3 0;
-#X connect 4 1 7 0;
+#X connect 4 1 2 1;
 #X connect 5 0 3 1;
 #X connect 6 0 0 0;
-#X connect 7 0 2 1;
 #X coords 0 -1 1 1 58 40 1 100 100;
 #X restore 149 337 pd slidr;
 #N canvas 2661 61 687 588 clrwl 0;
@@ -398,8 +393,8 @@ cause feedback. A cheap method to remove it is within., f 54;
 #X connect 36 0 26 0;
 #X connect 36 1 27 0;
 #X connect 36 2 28 0;
-#X restore 184 200 pd hsv2rgb;
-#X msg 184 174 \$1 1 1;
+#X restore 184 230 pd hsv2rgb;
+#X msg 184 204 \$1 1 1;
 #N canvas 2004 397 649 676 rgb2pd 0;
 #X obj 56 73 inlet;
 #X obj 56 445 outlet;
@@ -444,25 +439,25 @@ cause feedback. A cheap method to remove it is within., f 54;
 #X connect 17 0 6 0;
 #X connect 18 0 14 0;
 #X connect 19 0 16 0;
-#X restore 184 313 pd rgb2pd;
-#X obj 102 121 cnv 15 51 15 empty \$0-wheel rotary 5 7 0 11 -192 -262144
-0;
+#X restore 184 343 pd rgb2pd;
+#X obj 102 121 cnv 15 51 15 empty \$0-wheel rotary 5 7 0 11 -260929
+-262144 0;
 #X obj 184 30 inlet;
-#X obj 219 88 + 1;
-#X obj 184 88 f;
+#X obj 184 115 + 1;
+#X obj 184 86 f;
 #X obj 184 58 t b f;
-#X floatatom 201 145 5 0 0 0 - - -, f 5;
-#X obj 215 254 unpack f f f;
-#X floatatom 215 280 4 0 0 0 - - -, f 4;
-#X floatatom 249 280 4 0 0 0 - - -, f 4;
-#X floatatom 284 280 4 0 0 0 - - -, f 4;
-#X floatatom 215 360 15 0 0 0 - - -, f 15;
-#X msg 184 449 \; \$2-wheel color \$1 0 0;
-#X obj 184 426 pack f \$0;
-#X obj 226 231 s \$0-clrwl;
-#X text 298 231 send to LED color control for visual feedback;
-#X obj 251 89 mod 100;
-#X obj 184 112 / 100;
+#X floatatom 201 175 5 0 0 0 - - -, f 5;
+#X obj 215 284 unpack f f f;
+#X floatatom 215 310 4 0 0 0 - - -, f 4;
+#X floatatom 249 310 4 0 0 0 - - -, f 4;
+#X floatatom 284 310 4 0 0 0 - - -, f 4;
+#X floatatom 215 390 15 0 0 0 - - -, f 15;
+#X msg 184 479 \; \$2-wheel color \$1 0 0;
+#X obj 184 456 pack f \$0;
+#X obj 226 261 s \$0-clrwl;
+#X text 298 261 send to LED color control for visual feedback;
+#X obj 216 115 mod 100;
+#X obj 184 142 / 100;
 #X connect 0 0 9 0;
 #X connect 0 0 2 0;
 #X connect 0 0 16 0;
@@ -471,8 +466,8 @@ cause feedback. A cheap method to remove it is within., f 54;
 #X connect 2 0 15 0;
 #X connect 4 0 7 0;
 #X connect 5 0 18 0;
+#X connect 5 0 19 0;
 #X connect 6 0 5 0;
-#X connect 6 0 19 0;
 #X connect 7 0 6 0;
 #X connect 7 1 5 1;
 #X connect 9 0 10 0;
@@ -609,35 +604,38 @@ patches to see the synthesis in action.;
 #X text 138 88 See inside for LED color control;
 #X obj 69 725 bng 15 250 50 0 empty empty clipping 18 9 0 10 -262144
 -258113 -1;
-#X connect 10 0 37 0;
+#X text 129 511 The internal samplingrate is 24 kHz. It is upsampled
+to 48 kHz. To smooth the resulting artefacts use a low-pass filter.
+, f 64;
+#X connect 10 0 36 0;
 #X connect 14 0 15 0;
-#X connect 14 1 38 0;
-#X connect 14 2 39 0;
-#X connect 15 0 40 0;
-#X connect 16 0 44 0;
+#X connect 14 1 37 0;
+#X connect 14 2 38 0;
+#X connect 15 0 39 0;
+#X connect 16 0 43 0;
 #X connect 18 0 17 0;
 #X connect 18 1 19 0;
-#X connect 20 0 37 0;
+#X connect 20 0 36 0;
 #X connect 21 0 16 0;
 #X connect 21 1 14 0;
 #X connect 21 2 18 0;
-#X connect 21 3 35 0;
+#X connect 21 3 34 0;
 #X connect 23 0 22 0;
 #X connect 24 0 23 1;
-#X connect 25 0 43 1;
-#X connect 25 0 41 0;
+#X connect 25 0 42 1;
+#X connect 25 0 40 0;
 #X connect 26 0 11 0;
 #X connect 26 0 11 1;
-#X connect 28 0 58 0;
+#X connect 28 0 57 0;
 #X connect 29 0 31 0;
 #X connect 30 0 28 1;
 #X connect 31 0 28 0;
-#X connect 37 0 29 0;
-#X connect 37 1 21 0;
-#X connect 37 1 23 0;
-#X connect 43 0 26 0;
-#X connect 43 2 61 0;
-#X connect 44 0 12 0;
-#X connect 44 1 13 0;
-#X connect 57 0 37 0;
-#X connect 58 0 43 0;
+#X connect 36 0 29 0;
+#X connect 36 1 21 0;
+#X connect 36 1 23 0;
+#X connect 42 0 26 0;
+#X connect 42 2 60 0;
+#X connect 43 0 12 0;
+#X connect 43 1 13 0;
+#X connect 56 0 36 0;
+#X connect 57 0 42 0;
