@@ -33,7 +33,7 @@ https://chair.audio ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 0;
 #X obj 19 597 cnv 15 540 30 empty empty empty 20 12 0 14 -262130 -66577
 0;
-#X obj 31 42 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1 1
+#X obj 31 42 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0 1
 ;
 #X obj 31 785 dac~;
 #X floatatom 70 433 5 0 0 0 - - -, f 5;
@@ -53,7 +53,7 @@ https://chair.audio ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #X obj 136 141 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
 #X obj 102 638 vsl 15 59 -30 30 0 0 empty empty dB_Gain -45 25 0 10
--262144 -1 -1 2800 1;
+-262144 -1 -1 0 1;
 #X obj 31 754 hip~ 4;
 #X text 82 753 It's good practice to protect against possible DC-offset.
 ;
@@ -91,22 +91,22 @@ the Tickle and sometimes issues with feedback occur.;
 #X connect 9 0 1 0;
 #X connect 10 0 8 1;
 #X restore 31 571 pd feedback-cancellation;
-#N canvas 1156 131 479 815 diagnostic 0;
+#N canvas 1156 131 479 575 diagnostic 0;
 #X obj 18 15 inlet~;
-#X obj 20 725 outlet~;
+#X obj 20 533 outlet~;
 #N canvas 1 681 450 300 (subpatch) 0;
 #X array \$0-waveform 250 float 4;
 #X coords 0 1 249 -1 250 122 1;
-#X restore 177 228 graph;
+#X restore 177 210 graph;
 #N canvas 1 681 450 300 (subpatch) 0;
 #X array \$0-env 250 float 4;
 #X coords 0 12 249 -65 250 122 1 0 0;
-#X restore 177 414 graph;
-#X text 429 282 0;
-#X text 428 343 -1;
-#X text 432 224 1;
-#X obj 128 415 vu 15 120 empty empty -1 -8 0 10 -66577 -1 1 0;
-#X floatatom 61 416 5 0 0 0 - - -, f 5;
+#X restore 177 355 graph;
+#X text 429 264 0;
+#X text 428 325 -1;
+#X text 432 206 1;
+#X obj 128 356 vu 15 120 empty empty -1 -8 0 10 -66577 -1 1 0;
+#X floatatom 53 354 5 0 0 0 - - -, f 5;
 #N canvas 2652 687 466 330 draw_envelope 0;
 #X obj 32 193 list;
 #X obj 32 239 list trim;
@@ -143,7 +143,7 @@ the Tickle and sometimes issues with feedback occur.;
 #X connect 15 1 0 0;
 #X connect 15 2 10 1;
 #X connect 15 3 12 0;
-#X restore 61 375 pd draw_envelope;
+#X restore 53 316 pd draw_envelope;
 #N canvas 2909 548 685 568 draw_waveform 0;
 #X obj 29 184 list;
 #X obj 29 230 list trim;
@@ -169,10 +169,10 @@ the Tickle and sometimes issues with feedback occur.;
 #X connect 8 0 5 0;
 #X connect 9 0 10 0;
 #X connect 10 0 6 0;
-#X restore 62 226 pd draw_waveform;
-#X text 430 528 -65;
-#X text 430 407 +12;
-#X text 92 553 Note: The envelope table is linear while the VU meter
+#X restore 67 211 pd draw_waveform;
+#X text 430 469 -65;
+#X text 430 348 +12;
+#X text 91 521 Note: The envelope table is linear while the VU meter
 isn't \, hence the discrepancy between the scaling of the two.;
 #N canvas 1996 385 765 456 24kHz 0;
 #X obj 600 29 block~ 64 1 0.5;
@@ -221,7 +221,7 @@ isn't \, hence the discrepancy between the scaling of the two.;
 #X connect 17 2 7 0;
 #X connect 18 0 6 0;
 #X coords 0 -1 1 1 58 40 1 100 100;
-#X restore 43 154 pd 24kHz;
+#X restore 52 156 pd 24kHz;
 #X obj 91 37 vsl 15 59 -30 30 0 1 empty empty dB_Gain -45 25 0 10 -262144
 -1 -1 3100 1;
 #X floatatom 91 105 5 0 0 0 dB - -, f 5;
@@ -299,7 +299,7 @@ cause feedback. A cheap method to remove it is within., f 54;
 #X obj 31 127 tickle~;
 #N canvas 2454 390 432 210 slidr 0;
 #X obj 105 121 hsl 46 15 0 1 0 0 empty empty empty -2 -8 0 10 -262144
--1 -1 187 1;
+-1 -1 0 1;
 #X obj 175 3 inlet;
 #X obj 175 72 + 1;
 #X obj 175 46 f;
@@ -508,7 +508,7 @@ cause feedback. A cheap method to remove it is within., f 54;
 #X connect 18 0 14 0;
 #X connect 19 0 16 0;
 #X restore 184 343 pd rgb2pd;
-#X obj 102 121 cnv 15 51 15 empty \$0-wheel rotary 5 7 0 11 -258049
+#X obj 102 121 cnv 15 51 15 empty \$0-wheel rotary 5 7 0 11 -258071
 -262144 0;
 #X obj 184 30 inlet;
 #X obj 184 115 + 1;
