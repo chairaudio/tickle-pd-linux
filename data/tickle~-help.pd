@@ -1,4 +1,4 @@
-#N canvas 548 93 600 866 10;
+#N canvas 594 99 600 866 10;
 #X obj 19 461 cnv 15 540 40 empty empty empty 20 12 0 14 -103858 -66577
 0;
 #X obj 19 506 cnv 15 540 40 empty empty empty 20 12 0 14 -161266 -66577
@@ -33,7 +33,7 @@ https://chair.audio ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 0;
 #X obj 19 597 cnv 15 540 30 empty empty empty 20 12 0 14 -262130 -66577
 0;
-#X obj 31 42 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0 1
+#X obj 31 42 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1 1
 ;
 #X obj 31 785 dac~;
 #X floatatom 70 433 5 0 0 0 - - -, f 5;
@@ -52,8 +52,8 @@ https://chair.audio ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #X obj 91 161 spigot 0;
 #X obj 136 141 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
-#X obj 102 638 vsl 15 59 -30 30 0 0 empty empty dB_Gain -45 25 0 10
--262144 -1 -1 0 1;
+#X obj 102 638 vsl 15 59 -30 30 0 1 empty empty dB_Gain -45 25 0 10
+-262144 -1 -1 4100 1;
 #X obj 31 754 hip~ 4;
 #X text 82 753 It's good practice to protect against possible DC-offset.
 ;
@@ -223,7 +223,7 @@ isn't \, hence the discrepancy between the scaling of the two.;
 #X coords 0 -1 1 1 58 40 1 100 100;
 #X restore 52 156 pd 24kHz;
 #X obj 91 37 vsl 15 59 -30 30 0 1 empty empty dB_Gain -45 25 0 10 -262144
--1 -1 3100 1;
+-1 -1 4400 1;
 #X floatatom 91 105 5 0 0 0 dB - -, f 5;
 #N canvas 3194 353 338 612 gain 0;
 #X obj 32 26 inlet~;
@@ -299,7 +299,7 @@ cause feedback. A cheap method to remove it is within., f 54;
 #X obj 31 127 tickle~;
 #N canvas 2454 390 432 210 slidr 0;
 #X obj 105 121 hsl 46 15 0 1 0 0 empty empty empty -2 -8 0 10 -262144
--1 -1 0 1;
+-1 -1 3750 1;
 #X obj 175 3 inlet;
 #X obj 175 72 + 1;
 #X obj 175 46 f;
@@ -507,23 +507,23 @@ cause feedback. A cheap method to remove it is within., f 54;
 #X connect 17 0 6 0;
 #X connect 18 0 14 0;
 #X connect 19 0 16 0;
-#X restore 184 343 pd rgb2pd;
-#X obj 102 121 cnv 15 51 15 empty \$0-wheel rotary 5 7 0 11 -258071
+#X restore 184 374 pd rgb2pd;
+#X obj 102 121 cnv 15 51 15 empty \$0-wheel rotary 5 7 0 11 -261953
 -262144 0;
 #X obj 184 30 inlet;
 #X obj 184 115 + 1;
 #X obj 184 86 f;
 #X obj 184 58 t b f;
 #X floatatom 201 175 5 0 0 0 - - -, f 5;
-#X obj 215 284 unpack f f f;
-#X floatatom 215 310 4 0 0 0 - - -, f 4;
-#X floatatom 249 310 4 0 0 0 - - -, f 4;
-#X floatatom 284 310 4 0 0 0 - - -, f 4;
-#X floatatom 215 390 15 0 0 0 - - -, f 15;
+#X obj 215 315 unpack f f f;
+#X floatatom 215 341 4 0 0 0 - - -, f 4;
+#X floatatom 249 341 4 0 0 0 - - -, f 4;
+#X floatatom 284 341 4 0 0 0 - - -, f 4;
+#X floatatom 215 421 15 0 0 0 - - -, f 15;
 #X msg 184 479 \; \$2-wheel color \$1 0 0;
 #X obj 184 456 pack f \$0;
-#X obj 226 261 s \$0-clrwl;
-#X text 298 261 send to LED color control for visual feedback;
+#X obj 222 275 s \$0-clrwl;
+#X text 294 275 send to LED color control for visual feedback;
 #X obj 216 115 mod 100;
 #X obj 184 142 / 100;
 #X connect 0 0 9 0;
@@ -607,7 +607,7 @@ cause feedback. A cheap method to remove it is within., f 54;
 #X text 30 2 A driver installation and the Tickle-Hardware is neccessary
 to run this patch.;
 #X text 57 41 1 starts polling data \, 0 stops it.;
-#N canvas 2692 199 553 832 LED 0;
+#N canvas 2065 204 553 832 LED 0;
 #X obj 30 754 outlet;
 #X obj 138 291 vsl 15 99 0 1 0 0 empty empty empty 0 -9 0 10 -258113
 -1 -1 0 1;
