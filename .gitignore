@@ -1,4 +1,4 @@
-build
+build*
 subprojects/*
 !subprojects/*.wrap
 .vscode
@@ -7,3 +7,4 @@ src/gitversion.h
 *.kdev4
 .DS_Store
 .directory
+data/*.wav

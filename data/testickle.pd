@@ -27,7 +27,7 @@
 #X obj 102 394 unpack f f f;
 #X text 188 418 x \, y \, (z);
 #X obj 53 22 loadbang;
-#X obj 157 494 print y;
+#X obj 204 451 print y;
 #X obj 620 516 print debug;
 #X obj 492 420 tickle~ debug, f 29;
 #X obj 500 384 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
@@ -61,8 +61,11 @@
 #X obj 209 47 hradio 15 1 0 5 empty empty empty 0 -8 0 10 -262144 -1
 -1 4;
 #X msg 208 84 dim \$1;
+#X obj 145 494 print x;
 #X connect 0 0 14 0;
 #X connect 1 0 2 0;
+#X connect 3 0 51 0;
+#X connect 4 0 23 0;
 #X connect 5 0 6 0;
 #X connect 5 1 7 0;
 #X connect 5 2 8 0;
