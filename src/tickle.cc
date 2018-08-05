@@ -196,6 +196,11 @@ static void tickle_toggle_polling(tickle_t* self, float value) {
     if (value == 0) {
         self->keep_polling = self->is_active = false;
     } else {
+        if (not self->client->get_device_handle()) {
+            error("no device available");
+            return;
+        }
+
         self->keep_polling = true;
         if (not self->is_active) {
             self->is_active = true;

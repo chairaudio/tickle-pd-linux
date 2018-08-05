@@ -15,10 +15,11 @@ class tickle::Client {
     std::optional<DeviceHandle> get_device_handle() const {
         return _device_handle;
     }
+    bool has_device() const { return get_device_handle().has_value(); }
 
     void notify_device_was_connected(DeviceHandle);
     void notify_device_was_disconnected();
-        
+
     void copy_frame(const isoc_frame&);
 
     struct FrameChanges {
@@ -37,12 +38,8 @@ class tickle::Client {
     };
 
     FrameChanges compare_frames();
-    
-    enum class DSPState {
-        kUndefined,
-        kWillStart,
-        kIsRunning
-    };
+
+    enum class DSPState { kUndefined, kWillStart, kIsRunning };
     void prepare_dsp(float, int);
     void fill_audio_buffer(float* out, uint32_t n_samples);
 
@@ -51,7 +48,7 @@ class tickle::Client {
 
     isoc_frame _current_frame, _previous_frame;
 
-    DSPState _dsp_state {DSPState::kUndefined};
+    DSPState _dsp_state{DSPState::kUndefined};
     void _copy_samples();
     static constexpr uint32_t samples_per_chunk = 24;
     static constexpr uint32_t n_chunks = 16;
