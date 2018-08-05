@@ -12,6 +12,11 @@ stdcppfs_dep = meson.get_compiler('cpp').find_library('stdc++fs',
 )
 
 install_dir = get_option('install_dir')
+if install_dir.startswith('~')
+  install_dir = install_dir.split('~')[1]
+  install_dir = '/home/@0@@1@'.format(run_command('whoami').stdout().strip(), install_dir)
+endif
+
 
 version_data = configuration_data()
 version_data.set('version', run_command('git', 'describe').stdout().strip())
