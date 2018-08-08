@@ -218,6 +218,8 @@ static t_int* tickle_dsp_perform_audio_out(t_int* w) {
     int n_samples = (int)(w[3]);
     if (self->is_active) {
         self->client->fill_audio_buffer(out, n_samples);
+    } else {
+        memset(out, 0, n_samples * sizeof(t_sample));
     }
 
     return (w + 4);
