@@ -6,8 +6,11 @@ using tickle::DeviceHandle;
 using tickle::NormalizedPosition;
 using tickle::Position;
 
+#include <iostream>
+
 Client::Client() {
-    memset(_silence_buffer.data(), 0, samples_per_chunk * 2);
+    memset(_silence_buffer.samples.data(), 0, samples_per_chunk * 2);
+    _silence_buffer.n_valid_samples = samples_per_chunk;
 }
 
 void Client::notify_device_was_connected(DeviceHandle device_handle) {
@@ -95,10 +98,19 @@ void Client::_copy_samples() {
         return;
     }
     auto& buffer = _audio_buffer[_write_chunk % n_chunks];
-    memcpy(buffer.data(), _current_frame.samples,
-           samples_per_chunk * sizeof(int16_t));
-    ++_write_chunk;
-    // fmt::print("{} {}\n", __PRETTY_FUNCTION__, _current_frame.n_samples);
+    if (_current_frame.n_samples < 24
+        || _current_frame.n_samples > 25) 
+    {
+        fmt::print("{} {}\n", __PRETTY_FUNCTION__, _current_frame.n_samples);
+        // reject the buffer, something went wrong
+        return;
+    }
+    memcpy(buffer.samples.data(), _current_frame.samples,
+           _current_frame.n_samples * sizeof(int16_t));
+    buffer.n_valid_samples = _skip ? samples_per_chunk : _current_frame.n_samples;
+    // fmt::print("+ {}\n", buffer.n_valid_samples);
+    ++_write_chunk;    
+    _write_index_abs += buffer.n_valid_samples;
 }
 
 void Client::fill_audio_buffer(float* out, uint32_t n_samples) {
@@ -108,24 +120,40 @@ void Client::fill_audio_buffer(float* out, uint32_t n_samples) {
 
     if (_dsp_state == DSPState::kWillStart) {
         _write_chunk = 0;
-        _read_chunk = _write_chunk - n_chunks;
+        _read_chunk = - (n_chunks / 2);
+        _read_index = _read_index_abs = _write_index_abs = 0;
         _dsp_state = DSPState::kIsRunning;
     }
 
-    // fmt::print("{} {}\n", __PRETTY_FUNCTION__, n_samples);
-
+    
+    float sample {0};
+    int32_t n_samples_in_buffer = samples_per_chunk;
+    int32_t flows = 0;
     for (uint32_t sample_idx = 0; sample_idx < n_samples; sample_idx += 2) {
-        if (_read_index % samples_per_chunk == 0) {
-            ++_read_chunk;
+        if (_read_chunk >= 0 && _device_handle) {
+            auto& buffer = _audio_buffer[_read_chunk % n_chunks];    
+            sample = static_cast<float>(buffer.samples[_read_index]) / 32768.f;
+            n_samples_in_buffer = buffer.n_valid_samples;
         }
-        auto& buffer = (_read_chunk >= 0 && _device_handle)
-                           ? _audio_buffer[_read_chunk % n_chunks]
-                           : _silence_buffer;
 
-        float sample =
-            static_cast<float>(buffer[_read_index % samples_per_chunk]) /
-            32768.f;
         out[sample_idx] = out[sample_idx + 1] = sample;
         ++_read_index;
+        
+        if (_read_index >= n_samples_in_buffer) {
+            ++_read_chunk;
+            _read_index = 0;
+            ++flows;
+        }
+        _read_index_abs++;
     }
+ 
+    int32_t d = _write_index_abs - _read_index_abs;
+    _skip = d > (n_chunks * samples_per_chunk / 2); 
+    
+    /*
+    static uint32_t count = 0;
+    if ( (count++ % 1000) == 0) {
+        std::cout << count << " " << _write_index_abs << " " << _read_index_abs << " " << d << " " << _skip << "\n";
+        std::cout << _write_chunk << "/" << _read_chunk << "/" << n_samples_in_buffer << " " << flows << std::endl;
+    }*/
 }

@@ -211,24 +211,34 @@ static void tickle_toggle_polling(tickle_t* self, float value) {
 
 static t_int* tickle_dsp_perform_audio_out(t_int* w) {
     tickle_t* self = (tickle_t*)(w[1]);
-
-    // fmt::print("{} {}\n", __PRETTY_FUNCTION__, self->number);
-
     t_sample* out = (t_sample*)(w[2]);
     int n_samples = (int)(w[3]);
-    if (self->is_active) {
-        self->client->fill_audio_buffer(out, n_samples);
-    } else {
+    self->client->fill_audio_buffer(out, n_samples);
+    
+    if (not self->is_active) {
         memset(out, 0, n_samples * sizeof(t_sample));
     }
-
+        
+    // static uint32_t count = 0;
+    // fmt::print("{} {} {}\n", __PRETTY_FUNCTION__, count++, n_samples);
+    
     return (w + 4);
 }
 
 static void tickle_dsp_setup(tickle_t* self, t_signal** sp) {
-    // fmt::print("{}\n", __PRETTY_FUNCTION__);
     // fmt::print("{}\n", sp[0]->s_sr);
     // fmt::print("{}\n", sp[0]->s_vecsize);
+
+    /*
+    if (not self->client->get_device_handle()) {
+        error("no device available");
+        return;
+    }
+    if (not self->is_active) {
+        error("device is not active");
+        return;
+    } */
+    
     if (sp[0]->s_sr != 48000) {
         error("tickle~ is best served at 48khz");
     }
