@@ -136,7 +136,7 @@ void Client::fill_audio_buffer(float* out, uint32_t n_samples) {
 
     if (_dsp_state == DSPState::kWillStart) {
         _write_chunk = 0;//n_chunks / 2;
-        _read_chunk = -n_chunks;// / 2);
+        _read_chunk = - ((n_chunks/4)*3);// / 2);
         _read_index = 0;
         _read_index_abs = _read_chunk * samples_per_chunk;
         _write_index_abs = 0;//_write_chunk * samples_per_chunk;
@@ -192,9 +192,9 @@ void Client::fill_audio_buffer(float* out, uint32_t n_samples) {
     //     std::cout << "should never happen" << std::endl;
     // }
             
-    
+    /*
     std::cout << frame_idx << " " << _write_index_abs << " " << _read_index_abs << " " << d << " " << _skip << "\n";
     std::cout << _write_chunk << "/" << _read_chunk << std::endl
-                << _write_chunk % n_chunks << "/" << _read_chunk % n_chunks << std::endl;
+                << _write_chunk % n_chunks << "/" << _read_chunk % n_chunks << std::endl;*/
                 // << "/" << n_samples_in_buffer << " " << flows << std::endl;
 }
