@@ -213,22 +213,36 @@ static t_int* tickle_dsp_perform_audio_out(t_int* w) {
     tickle_t* self = (tickle_t*)(w[1]);
     t_sample* out = (t_sample*)(w[2]);
     int n_samples = (int)(w[3]);
-    self->client->fill_audio_buffer(out, n_samples);
     
-    if (not self->is_active) {
+    
+    self->client->fill_audio_buffer(out, n_samples);    
+    /*if (not self->is_active) {
         memset(out, 0, n_samples * sizeof(t_sample));
-    }
+    }*/
+    
+    /*
+    static uint32_t frame_idx = 0;    
+    // fmt::print("{} {}\n", frame_idx, n_samples);        
+    ++frame_idx;
+    float sample {0};
+    for (int sample_idx = 0; sample_idx < n_samples; sample_idx += 2) {
+
+        if (frame_idx % 2) {
+            sample = 0.5;
+        } else {
+            sample = 0.0;
+        }
         
-    // static uint32_t count = 0;
-    // fmt::print("{} {} {}\n", __PRETTY_FUNCTION__, count++, n_samples);
+        out[sample_idx] = out[sample_idx + 1] = sample;
+        // out[sample_idx] = sample;
+    }*/
     
     return (w + 4);
 }
 
 static void tickle_dsp_setup(tickle_t* self, t_signal** sp) {
-    // fmt::print("{}\n", sp[0]->s_sr);
-    // fmt::print("{}\n", sp[0]->s_vecsize);
-
+    fmt::print("{} {} {} {} {}\n", __PRETTY_FUNCTION__, sp[0]->s_sr, sp[0]->s_vecsize, sys_getsr(), sys_getblksize());
+    
     /*
     if (not self->client->get_device_handle()) {
         error("no device available");

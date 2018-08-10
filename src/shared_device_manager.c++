@@ -57,7 +57,9 @@ void SharedDeviceManager::_spawn() {
     }
 
     // fmt::print("start streaming\n");
-    isoc_frame previous_frame;
+    isoc_frame previous_frame {
+        .number = 0
+    };
     bool did_post_error{false};
     while (_keep_running) {
         isoc_frame current_frame;
