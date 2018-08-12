@@ -214,28 +214,10 @@ static t_int* tickle_dsp_perform_audio_out(t_int* w) {
     t_sample* out = (t_sample*)(w[2]);
     int n_samples = (int)(w[3]);
     
-    
     self->client->fill_audio_buffer(out, n_samples);    
-    /*if (not self->is_active) {
+    if (not self->is_active || not self->client->has_device()) {
         memset(out, 0, n_samples * sizeof(t_sample));
-    }*/
-    
-    /*
-    static uint32_t frame_idx = 0;    
-    // fmt::print("{} {}\n", frame_idx, n_samples);        
-    ++frame_idx;
-    float sample {0};
-    for (int sample_idx = 0; sample_idx < n_samples; sample_idx += 2) {
-
-        if (frame_idx % 2) {
-            sample = 0.5;
-        } else {
-            sample = 0.0;
-        }
-        
-        out[sample_idx] = out[sample_idx + 1] = sample;
-        // out[sample_idx] = sample;
-    }*/
+    }
     
     return (w + 4);
 }
