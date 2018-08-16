@@ -14,7 +14,7 @@ typedef struct SmallBuffer_ {
     uint8_t data[SMALL_BUFFER_MAX_DATA_BYTES];
 } SmallBuffer;
 
-#define BIG_BUFFER_SIZE 128
+#define BIG_BUFFER_SIZE 256
 typedef struct BigBuffer_ {
     uint8_t data[BIG_BUFFER_SIZE];
 } BigBuffer;

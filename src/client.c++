@@ -62,11 +62,11 @@ Client::FrameChanges Client::compare_frames() {
 
     for (int8_t rotary_index = 0; rotary_index < int8_t(changes.rotary.size());
          ++rotary_index) {
-        if (_previous_frame.quad[rotary_index] != current.quad[rotary_index]) {
+        if (_previous_frame.quad_encoder[rotary_index] != current.quad_encoder[rotary_index]) {
             auto clockwise =
-                current.quad[rotary_index] > _previous_frame.quad[rotary_index];
-            if (abs(_previous_frame.quad[rotary_index] -
-                    current.quad[rotary_index]) > 64) {
+                current.quad_encoder[rotary_index] > _previous_frame.quad_encoder[rotary_index];
+            if (abs(_previous_frame.quad_encoder[rotary_index] -
+                    current.quad_encoder[rotary_index]) > 64) {
                 clockwise = not clockwise;
             }
             changes.rotary[rotary_index] = {
@@ -106,13 +106,21 @@ void Client::_copy_samples() {
     
     std::lock_guard guard {m};
     auto& buffer = _audio_buffer[_write_chunk % n_chunks];
+    /*
     if (_current_frame.n_samples < 24
         || _current_frame.n_samples > 25) 
     {
         fmt::print("{} {}\n", __PRETTY_FUNCTION__, _current_frame.n_samples);
         // reject the buffer, something went wrong
         return;
+    } */
+    // fmt::print("{} {}\n", __PRETTY_FUNCTION__, _current_frame.n_samples);
+    
+    if (_current_frame.n_samples > buffer.samples.size()) {
+        fmt::print("{}: too many samples, got {}\n", __PRETTY_FUNCTION__, _current_frame.n_samples);
+        return;
     }
+    
     memcpy(buffer.samples.data(), _current_frame.samples,
            _current_frame.n_samples * sizeof(int16_t));
     buffer.n_valid_samples = _skip ? samples_per_chunk : _current_frame.n_samples;
@@ -153,7 +161,7 @@ void Client::fill_audio_buffer(float* out, uint32_t n_samples) {
     float sample {0};
     int32_t n_samples_in_buffer = samples_per_chunk;
     int32_t flows = 0;
-    for (uint32_t sample_idx = 0; sample_idx < n_samples; sample_idx += 2) {
+    for (uint32_t sample_idx = 0; sample_idx < n_samples; ++sample_idx) {
         if (_read_chunk >= 0) {            
             auto& buffer = _audio_buffer[_read_chunk % n_chunks];    
             sample = static_cast<float>(buffer.samples[_read_index]) / 32768.f;
@@ -172,7 +180,7 @@ void Client::fill_audio_buffer(float* out, uint32_t n_samples) {
             sample = 0.0;
         } */
         
-        out[sample_idx] = out[sample_idx + 1] = sample;
+        out[sample_idx] = sample;
         ++_read_index;
         
         if (_read_index >= n_samples_in_buffer) {
@@ -192,9 +200,8 @@ void Client::fill_audio_buffer(float* out, uint32_t n_samples) {
     //     std::cout << "should never happen" << std::endl;
     // }
             
-    /*
     std::cout << frame_idx << " " << _write_index_abs << " " << _read_index_abs << " " << d << " " << _skip << "\n";
     std::cout << _write_chunk << "/" << _read_chunk << std::endl
-                << _write_chunk % n_chunks << "/" << _read_chunk % n_chunks << std::endl;*/
+                << _write_chunk % n_chunks << "/" << _read_chunk % n_chunks << std::endl;
                 // << "/" << n_samples_in_buffer << " " << flows << std::endl;
 }
