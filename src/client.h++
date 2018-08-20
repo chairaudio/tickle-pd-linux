@@ -43,6 +43,11 @@ class tickle::Client {
     void prepare_dsp(float, int);
     void fill_audio_buffer(float* out, uint32_t n_samples);
 
+    uint16_t get_ring_size() const
+    {
+        return _ring_size;
+    }
+    
   private:
     std::optional<DeviceHandle> _device_handle;
 
@@ -50,6 +55,8 @@ class tickle::Client {
 
     DSPState _dsp_state{DSPState::kUndefined};
     void _copy_samples();
+    
+    /*
     static constexpr int32_t samples_per_chunk = 96;
     static constexpr int32_t n_chunks = 16;
     
@@ -57,11 +64,11 @@ class tickle::Client {
         std::array<int16_t, samples_per_chunk + 4> samples;
         uint16_t chunk_id;
         int32_t n_valid_samples;
-    };
-    chunk_t _silence_buffer;
-    std::array<chunk_t, n_chunks> _audio_buffer;
-    std::atomic<int32_t> _read_chunk{0}, _read_index{0}, _write_chunk{0};
-    std::atomic<int32_t> _read_index_abs {0}, _write_index_abs {0};
-
+    };*/
+    // chunk_t _silence_buffer;
+    std::atomic<uint16_t> _ring_size {96}; 
+    std::array<int16_t, 48000> _ring_buffer; // max capacity: 1s
+    // std::atomic<int32_t> _read_chunk{0}, _read_index{0}, _write_chunk{0};
+    std::atomic<int32_t> _read_index {0}, _write_index {0};
     bool _skip {true};
 };

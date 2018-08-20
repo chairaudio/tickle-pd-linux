@@ -71,7 +71,8 @@ typedef struct _tickle {
     bool keep_polling;
 
     ClientHandle client;
-
+    bool debug;
+    t_outlet* ring_size_out;
 } tickle_t;
 
 /* -------------- forward decls ---------------- */
@@ -83,7 +84,7 @@ static void tickle_toggle_polling(tickle_t*, float);
 /* -------------- structors ---------------- */
 
 static void* tickle_new(t_symbol* s, int argc, t_atom* argv) {
-    // fmt::print("{} {}\n", __PRETTY_FUNCTION__, argc);
+    fmt::print("{} {}\n", __PRETTY_FUNCTION__, argc);
 
     tickle_t* self = (tickle_t*)pd_new(tickle_tilde_class);
 
@@ -97,6 +98,14 @@ static void* tickle_new(t_symbol* s, int argc, t_atom* argv) {
 
     self->client = shared_device_manager.create_client();
 
+    self->debug = false;
+    if (argc != 0) {
+        if (gensym("debug") == atom_gensym(&argv[0])) {
+            self->debug = true;
+            self->ring_size_out = outlet_new(&x_obj, 0);
+        }
+    }
+    
     return (void*)self;
 }
 
@@ -173,13 +182,9 @@ static void tickle_bang(tickle_t* self) {
         outlet_anything(self->data_out, gensym("button"), 2, button_out.data());
     }
 
-    /*
     if (self->debug) {
-        outlet_float(self->raw_pos_x_out, position.x);
-        outlet_float(self->raw_pos_y_out, position.y);
-        outlet_float(self->raw_touch_out, (t_float)touch ? 1.f : 0.f);
+        outlet_float(self->ring_size_out, self->client->get_ring_size());
     }
-    */
 }
 
 /* -------------- poll clock callback ---------------- */
