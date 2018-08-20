@@ -125,7 +125,7 @@ void Client::fill_audio_buffer(float* out, uint32_t n_samples) {
     if (_dsp_state == DSPState::kWillStart) {
         _read_index = -_ring_size / 2;
         _write_index = 0;
-        std::cout << "resetting ring_size " << _ring_size << std::endl;
+        // std::cout << "resetting ring_size " << _ring_size << std::endl;
         if (_device_handle) {
             _dsp_state = DSPState::kIsRunning;
         }
@@ -135,7 +135,7 @@ void Client::fill_audio_buffer(float* out, uint32_t n_samples) {
     int32_t distance = _write_index - _read_index;
     int32_t target_distance = _ring_size / 2;
     // _skip = d > (n_chunks * samples_per_chunk / 2); 
-    std::cout << distance << " : " << target_distance << std::endl;
+    // std::cout << distance << " : " << target_distance << std::endl;
     
     float sample {0};
     bool needs_skip = distance < target_distance;
@@ -153,20 +153,12 @@ void Client::fill_audio_buffer(float* out, uint32_t n_samples) {
         }
     }
 
-    if (distance < 0 || distance > _ring_size) {
-        _ring_size += 96;
-        // std::cout << "new ring size: " << _ring_size << std::endl;
-        _dsp_state = DSPState::kWillStart;
+    if (_read_index < 0) {
+        return;
     }
     
-    
-    // if (_read_index_abs > _write_index_abs) {
-    //     std::cout << "should never happen" << std::endl;
-    // }
-    /*
-    std::cout << frame_idx << " " << _write_index_abs << " " << _read_index_abs << " " << d << " " << _skip << "\n";
-    std::cout << _write_chunk << "/" << _read_chunk << std::endl
-                << _write_chunk % n_chunks << "/" << _read_chunk % n_chunks << std::endl;
-                */
-                // << "/" << n_samples_in_buffer << " " << flows << std::endl;
+    if (distance < 0 || distance > _ring_size) {
+        _ring_size += 96;
+        _dsp_state = DSPState::kWillStart;
+    }
 }
