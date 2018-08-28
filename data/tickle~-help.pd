@@ -1,4 +1,4 @@
-#N canvas 630 91 600 866 10;
+#N canvas 630 91 659 882 10;
 #X obj 19 495 cnv 15 540 40 empty empty empty 20 12 0 14 -103858 -66577
 0;
 #X obj 19 540 cnv 15 540 40 empty empty empty 20 12 0 14 -161266 -66577
@@ -588,7 +588,7 @@ output of the object for better undserstanding and debugging.;
 #X text 262 300 Buttons;
 #X text 88 102 Prints out information about the connected hardware
 ;
-#X text 259 446 Position on surface;
+#X text 257 441 Position on surface;
 #X text 259 343 Rotary controller;
 #X text 57 75 1 starts polling data \, 0 stops it.;
 #N canvas 2065 204 553 832 LED 0;
@@ -675,13 +675,13 @@ patches to see the synthesis in action.;
 ;
 #X text 191 547 Live situations or speakers on the same surface can
 cause feedback. A cheap method to remove it is within., f 54;
-#X text 289 461 Range: 0 to 1 0 \, 0 is in the left bottom of the surface
-;
 #X text 29 35 The samplingrate in the hardware is 48 kHz. If possible
 \, set the sampling rate of your system/Pd to 48 kHz with a blocksize
 of 64, f 81;
 #X text 28 10 A driver installation and the Tickle hardware is neccessary
 to run this patch., f 80;
+#X text 287 456 Range: 0 to 1 0 \, 0 is in the left bottom of the surface
+;
 #X connect 8 0 29 0;
 #X connect 11 0 12 0;
 #X connect 11 1 30 0;
