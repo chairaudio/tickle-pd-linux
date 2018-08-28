@@ -1,9 +1,9 @@
 #N canvas 630 91 600 866 10;
-#X obj 19 461 cnv 15 540 40 empty empty empty 20 12 0 14 -103858 -66577
+#X obj 19 495 cnv 15 540 40 empty empty empty 20 12 0 14 -103858 -66577
 0;
-#X obj 19 506 cnv 15 540 40 empty empty empty 20 12 0 14 -161266 -66577
+#X obj 19 540 cnv 15 540 40 empty empty empty 20 12 0 14 -161266 -66577
 0;
-#X obj 19 551 cnv 15 540 40 empty empty empty 20 12 0 14 -206578 -66577
+#X obj 19 585 cnv 15 540 40 empty empty empty 20 12 0 14 -206578 -66577
 0;
 #N canvas 0 579 453 298 META 0;
 #X text 40 153 LIBRARY internal;
@@ -19,35 +19,33 @@
 #X text 38 56 DESCRIPTION Tickle hardware vibration sensor controller
 instrument;
 #X restore 413 831 pd META;
-#X obj 18 113 cnv 15 80 40 empty empty empty 20 12 0 14 -252850 -66577
+#X obj 18 147 cnv 15 80 40 empty empty empty 20 12 0 14 -252850 -66577
 0;
 #X text 28 804 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ The
 Center for Haptic Audio Interaction Research 2018 ~~~~~~~~~~~~~~~~~~~~~~~
 https://chair.audio ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 , f 48;
-#X obj 188 233 cnv 15 370 25 empty empty empty 20 12 0 14 -262130 -66577
+#X obj 188 267 cnv 15 370 25 empty empty empty 20 12 0 14 -262130 -66577
 0;
-#X obj 102 303 cnv 15 460 75 empty empty empty 20 12 0 14 -262130 -66577
+#X obj 102 337 cnv 15 460 75 empty empty empty 20 12 0 14 -262130 -66577
 0;
-#X obj 19 597 cnv 15 540 30 empty empty empty 20 12 0 14 -262130 -66577
-0;
-#X obj 31 42 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1 1
+#X obj 31 76 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0 1
 ;
-#X floatatom 70 433 5 0 0 0 - - -, f 5;
-#X floatatom 127 433 5 0 0 0 - - -, f 5;
-#X obj 112 309 route 0 1 2;
-#X floatatom 112 338 5 0 0 0 - - -, f 5;
-#X obj 70 383 route 0;
-#X obj 155 285 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X floatatom 70 467 5 0 0 0 - - -, f 5;
+#X floatatom 127 467 5 0 0 0 - - -, f 5;
+#X obj 112 343 route 0 1 2;
+#X floatatom 112 372 5 0 0 0 - - -, f 5;
+#X obj 70 417 route 0;
+#X obj 155 319 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
-#X obj 155 262 route up down;
-#X obj 192 284 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 155 296 route up down;
+#X obj 192 318 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
-#X msg 51 68 info;
-#X obj 70 214 route pos rotary button touch;
-#X obj 91 184 print tickletilde;
-#X obj 91 161 spigot 0;
-#X obj 136 141 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X msg 51 102 info;
+#X obj 70 248 route pos rotary button touch;
+#X obj 91 218 print tickletilde;
+#X obj 91 195 spigot 0;
+#X obj 136 175 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
 #X obj 102 638 vsl 15 59 -30 30 0 1 empty \$0-main dB_Gain -45 25 0
 10 -262144 -1 -1 2900 1;
@@ -84,7 +82,7 @@ the Tickle and sometimes issues with feedback occur.;
 #X connect 8 0 1 0;
 #X connect 9 0 1 0;
 #X connect 10 0 8 1;
-#X restore 31 571 pd feedback-cancellation;
+#X restore 31 559 pd feedback-cancellation;
 #N canvas 1238 91 479 575 diagnostic 0;
 #X obj 18 15 inlet~;
 #X obj 20 533 outlet~;
@@ -217,7 +215,7 @@ isn't \, hence the discrepancy between the scaling of the two.;
 #X coords 0 -1 1 1 58 40 1 100 100;
 #X restore 52 156 pd 24kHz;
 #X obj 91 37 vsl 15 59 -30 30 0 1 empty \$0-gain dB_Gain -45 25 0 10
--262144 -1 -1 3000 1;
+-262144 -1 -1 2900 1;
 #X floatatom 91 105 5 0 0 0 dB - -, f 5;
 #N canvas 3194 353 338 612 gain 0;
 #X obj 32 26 inlet~;
@@ -279,21 +277,18 @@ saved to /tmp/;
 #X connect 17 0 1 0;
 #X connect 17 0 14 0;
 #X connect 17 2 18 0;
-#X restore 32 475 pd diagnostic;
-#X obj 172 553 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X restore 32 509 pd diagnostic;
+#X obj 172 541 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
-#X obj 31 521 lop~ 10000;
-#X text 133 465 Here you will find some tools to visualize the audio
+#X text 133 499 Here you will find some tools to visualize the audio
 output of the object for better undserstanding and debugging.;
-#X text 191 559 Live situations or speakers on the same surface can
-cause feedback. A cheap method to remove it is within., f 54;
-#X floatatom 198 239 5 0 0 0 - - -, f 5;
-#X text 110 600 <--- here is where the sound synthesis would happen
+#X floatatom 198 273 5 0 0 0 - - -, f 5;
+#X text 110 597 <--- here is where the sound synthesis would happen
 (see examples), f 68;
-#X obj 31 127 tickle~;
+#X obj 31 161 tickle~;
 #N canvas 2454 390 432 210 slidr 0;
 #X obj 105 121 hsl 48 15 0 1 0 0 empty empty empty -2 -8 0 10 -262144
--1 -1 4700 1;
+-1 -1 0 1;
 #X obj 175 3 inlet;
 #X obj 175 72 + 1;
 #X obj 175 46 f;
@@ -309,7 +304,7 @@ cause feedback. A cheap method to remove it is within., f 54;
 #X connect 5 0 6 0;
 #X connect 6 0 0 0;
 #X coords 0 -1 1 1 58 40 1 100 100;
-#X restore 149 337 pd slidr;
+#X restore 149 371 pd slidr;
 #N canvas 2661 61 600 496 clrwl 0;
 #N canvas 2167 511 794 665 hsv2rgb 0;
 #X msg 48 59 \$2 \$3 \$1;
@@ -538,8 +533,8 @@ cause feedback. A cheap method to remove it is within., f 54;
 #X connect 17 0 18 0;
 #X connect 18 0 1 0;
 #X coords 0 -1 1 1 58 40 1 100 100;
-#X restore 209 337 pd clrwl;
-#X obj 112 359 bng 15 50 10 0 empty empty empty 17 7 0 10 -262144 -1
+#X restore 209 371 pd clrwl;
+#X obj 112 393 bng 15 50 10 0 empty empty empty 17 7 0 10 -262144 -1
 -1;
 #X floatatom 102 706 5 0 0 0 dB - -, f 5;
 #N canvas 3194 353 338 612 gain 0;
@@ -584,21 +579,18 @@ cause feedback. A cheap method to remove it is within., f 54;
 #X connect 14 0 15 0;
 #X connect 15 0 17 0;
 #X restore 30 705 pd gain;
-#X obj 70 408 unpack f f;
-#X text 177 432 x \, y;
-#X text 297 284 button pressed: 1 \, button released: 0;
-#X text 299 324 clockwise rotation: 1 \, counterclockwise: -1;
-#X text 300 338 360° rotation are 24 ticks;
-#X text 277 428 0 to 1 0 \, 0 is in the left bottom of the surface
+#X obj 70 442 unpack f f;
+#X text 177 466 x \, y;
+#X text 297 318 button pressed: 1 \, button released: 0;
+#X text 299 358 clockwise rotation: 1 \, counterclockwise: -1;
+#X text 300 372 360° rotation are 24 ticks;
+#X text 260 272 Touch on surface;
+#X text 262 300 Buttons;
+#X text 88 102 Prints out information about the connected hardware
 ;
-#X text 260 238 Touch on surface;
-#X text 262 266 Buttons;
-#X text 88 68 Prints out information about the connected hardware;
-#X text 259 412 Position on surface;
-#X text 259 309 Rotary controller;
-#X text 30 2 A driver installation and the Tickle-Hardware is neccessary
-to run this patch.;
-#X text 57 41 1 starts polling data \, 0 stops it.;
+#X text 259 446 Position on surface;
+#X text 259 343 Rotary controller;
+#X text 57 75 1 starts polling data \, 0 stops it.;
 #N canvas 2065 204 553 832 LED 0;
 #X obj 30 754 outlet;
 #X obj 138 291 vsl 15 99 0 1 0 0 empty empty empty 0 -9 0 10 -258113
@@ -650,7 +642,7 @@ to run this patch.;
 #X connect 13 0 0 0;
 #X connect 24 0 25 0;
 #X connect 25 0 0 0;
-#X restore 91 87 pd LED;
+#X restore 91 121 pd LED;
 #N canvas 2294 691 593 158 synthesis 0;
 #X obj 29 24 inlet~;
 #X obj 29 47 outlet~;
@@ -658,14 +650,11 @@ to run this patch.;
 the synthesis would happen in your patch. Please refer to the example
 patches to see the synthesis in action.;
 #X connect 0 0 1 0;
-#X restore 31 600 pd synthesis;
-#X text 157 141 Print all messages to console;
-#X text 138 88 See inside for LED color control;
+#X restore 31 599 pd synthesis;
+#X text 157 175 Print all messages to console;
+#X text 138 122 See inside for LED color control;
 #X obj 69 725 bng 15 250 50 0 empty empty clipping 18 9 0 10 -262144
 -258113 -1;
-#X text 129 511 The internal samplingrate is 24 kHz. It is upsampled
-to 48 kHz. To smooth the resulting artefacts use a low-pass filter.
-, f 64;
 #X text 115 658 -> 0;
 #X text 114 690 -> -30;
 #X text 114 628 -> +30;
@@ -684,35 +673,43 @@ to 48 kHz. To smooth the resulting artefacts use a low-pass filter.
 #X obj 31 754 hip~ 4;
 #X text 82 753 It's good practice to protect against possible DC-offset.
 ;
-#X connect 9 0 32 0;
-#X connect 12 0 13 0;
-#X connect 12 1 33 0;
-#X connect 12 2 34 0;
+#X text 191 547 Live situations or speakers on the same surface can
+cause feedback. A cheap method to remove it is within., f 54;
+#X text 289 461 Range: 0 to 1 0 \, 0 is in the left bottom of the surface
+;
+#X text 29 35 The samplingrate in the hardware is 48 kHz. If possible
+\, set the sampling rate of your system/Pd to 48 kHz with a blocksize
+of 64, f 81;
+#X text 28 10 A driver installation and the Tickle hardware is neccessary
+to run this patch., f 80;
+#X connect 8 0 29 0;
+#X connect 11 0 12 0;
+#X connect 11 1 30 0;
+#X connect 11 2 31 0;
+#X connect 12 0 32 0;
 #X connect 13 0 35 0;
-#X connect 14 0 38 0;
-#X connect 16 0 15 0;
-#X connect 16 1 17 0;
-#X connect 18 0 32 0;
-#X connect 19 0 14 0;
-#X connect 19 1 12 0;
-#X connect 19 2 16 0;
-#X connect 19 3 30 0;
-#X connect 21 0 20 0;
-#X connect 22 0 21 1;
-#X connect 23 0 37 1;
-#X connect 23 0 36 0;
-#X connect 24 0 52 0;
-#X connect 25 0 27 0;
-#X connect 26 0 24 1;
-#X connect 27 0 24 0;
-#X connect 32 0 25 0;
-#X connect 32 1 19 0;
-#X connect 32 1 21 0;
-#X connect 37 0 63 0;
-#X connect 37 2 55 0;
-#X connect 38 0 10 0;
-#X connect 38 1 11 0;
-#X connect 51 0 32 0;
-#X connect 52 0 37 0;
-#X connect 63 0 62 0;
-#X connect 63 0 62 1;
+#X connect 15 0 14 0;
+#X connect 15 1 16 0;
+#X connect 17 0 29 0;
+#X connect 18 0 13 0;
+#X connect 18 1 11 0;
+#X connect 18 2 15 0;
+#X connect 18 3 27 0;
+#X connect 20 0 19 0;
+#X connect 21 0 20 1;
+#X connect 22 0 34 1;
+#X connect 22 0 33 0;
+#X connect 23 0 47 0;
+#X connect 24 0 23 0;
+#X connect 25 0 23 1;
+#X connect 29 0 24 0;
+#X connect 29 1 18 0;
+#X connect 29 1 20 0;
+#X connect 34 0 57 0;
+#X connect 34 2 50 0;
+#X connect 35 0 9 0;
+#X connect 35 1 10 0;
+#X connect 46 0 29 0;
+#X connect 47 0 34 0;
+#X connect 57 0 56 0;
+#X connect 57 0 56 1;
