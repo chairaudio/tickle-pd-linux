@@ -1,11 +1,12 @@
 #N canvas 630 91 659 882 10;
+#X declare -lib pddp;
 #X obj 19 495 cnv 15 540 40 empty empty empty 20 12 0 14 -103858 -66577
 0;
 #X obj 19 540 cnv 15 540 40 empty empty empty 20 12 0 14 -161266 -66577
 0;
 #X obj 19 585 cnv 15 540 40 empty empty empty 20 12 0 14 -206578 -66577
 0;
-#N canvas 0 579 453 298 META 0;
+#N canvas 4 579 453 298 META 0;
 #X text 40 153 LIBRARY internal;
 #X text 39 113 OUTLET_0 signal;
 #X text 38 16 KEYWORDS tickle hardware;
@@ -18,6 +19,7 @@
 #X text 38 92 INLET_0 active info;
 #X text 38 56 DESCRIPTION Tickle hardware vibration sensor controller
 instrument;
+#X obj 285 14 declare -lib pddp;
 #X restore 413 831 pd META;
 #X obj 18 147 cnv 15 80 40 empty empty empty 20 12 0 14 -252850 -66577
 0;
