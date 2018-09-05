@@ -69,10 +69,11 @@ typedef struct _tickle {
     t_clock* poll_clock;
     bool is_active;
     bool keep_polling;
-
+    uint16_t latency;
+    
     ClientHandle client;
     bool debug;
-    t_outlet* ring_size_out;
+    
 } tickle_t;
 
 /* -------------- forward decls ---------------- */
@@ -97,12 +98,12 @@ static void* tickle_new(t_symbol* s, int argc, t_atom* argv) {
     self->keep_polling = false;
 
     self->client = shared_device_manager.create_client();
-
+    
+    self->latency = 0;
     self->debug = false;
     if (argc != 0) {
         if (gensym("debug") == atom_gensym(&argv[0])) {
             self->debug = true;
-            self->ring_size_out = outlet_new(&x_obj, 0);
         }
     }
     
@@ -181,9 +182,13 @@ static void tickle_bang(tickle_t* self) {
         SETFLOAT(&button_out[1], button.value);
         outlet_anything(self->data_out, gensym("button"), 2, button_out.data());
     }
-
-    if (self->debug) {
-        outlet_float(self->ring_size_out, self->client->get_ring_size());
+    
+    auto ring_size = self->client->get_ring_size();
+    if (self->latency != ring_size) {
+        self->latency = ring_size;
+        std::array<t_atom, 1> latency_out;
+        SETFLOAT(&latency_out[0], self->latency);
+        outlet_anything(self->data_out, gensym("latency"), 1, latency_out.data());
     }
 }
 
