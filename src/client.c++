@@ -23,12 +23,12 @@ Client::Client() {
 
 void Client::notify_device_was_connected(DeviceHandle device_handle) {
     _device_handle = device_handle;
-    fmt::print("{}\n", __PRETTY_FUNCTION__);
+    // fmt::print("{}\n", __PRETTY_FUNCTION__);
 }
 
 void Client::notify_device_was_disconnected() {
     _device_handle = {};
-    fmt::print("{}\n", __PRETTY_FUNCTION__);
+    // fmt::print("{}\n", __PRETTY_FUNCTION__);
 }
 
 void Client::copy_frame(const isoc_frame& frame) {
@@ -97,7 +97,7 @@ Client::FrameChanges Client::compare_frames() {
 }
 
 void Client::prepare_dsp(float sample_rate, int buffer_size) {
-    fmt::print("{} {} {}\n", __PRETTY_FUNCTION__, sample_rate, buffer_size);
+    // fmt::print("{} {} {}\n", __PRETTY_FUNCTION__, sample_rate, buffer_size);
     _dsp_state = DSPState::kWillStart;
 }
 
