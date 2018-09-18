@@ -90,7 +90,7 @@ void SharedDeviceManager::_spawn() {
             client->copy_frame(current_frame);
         }
         previous_frame = current_frame;
-        std::this_thread::sleep_for(400us);
+        std::this_thread::sleep_for(1500us);
     }
 }
 
