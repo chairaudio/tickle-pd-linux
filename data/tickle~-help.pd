@@ -1,4 +1,4 @@
-#N canvas 765 181 628 880 10;
+#N canvas 726 206 628 880 10;
 #X declare -lib pddp;
 #X obj 19 495 cnv 15 540 40 empty empty empty 20 12 0 14 -103858 -66577
 0;
@@ -27,17 +27,17 @@ instrument;
 0;
 #X obj 102 337 cnv 15 460 75 empty empty empty 20 12 0 14 -262130 -66577
 0;
-#X obj 31 76 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0 1
+#X obj 31 76 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1 1
 ;
-#X floatatom 70 467 5 0 0 0 - - -;
-#X floatatom 127 467 5 0 0 0 - - -;
+#X floatatom 70 467 5 0 0 1 x - #0-x;
+#X floatatom 127 467 5 0 0 1 y - #0-y;
 #X obj 112 343 route 0 1 2;
 #X floatatom 112 372 5 0 0 0 - - -;
 #X obj 70 417 route 0;
-#X obj 155 319 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
-1;
+#X obj 155 319 tgl 15 0 empty empty up 17 7 0 10 -262144 -1 -1 0 1
+;
 #X obj 155 296 route up down;
-#X obj 192 318 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 192 318 tgl 15 0 empty empty down 17 7 0 10 -262144 -1 -1 0
 1;
 #X msg 51 102 info;
 #X obj 70 248 route pos rotary button touch;
@@ -81,7 +81,7 @@ the Tickle and sometimes issues with feedback occur.;
 #X connect 9 0 1 0;
 #X connect 10 0 8 1;
 #X restore 31 559 pd feedback-cancellation;
-#N canvas 1207 178 494 581 diagnostic 0;
+#N canvas 443 443 804 591 diagnostic 0;
 #X obj 18 15 inlet~;
 #X obj 20 533 outlet~;
 #N canvas 1 681 450 300 (subpatch) 0;
@@ -162,7 +162,7 @@ the Tickle and sometimes issues with feedback occur.;
 #X restore 67 211 pd draw_waveform;
 #X text 430 469 -65;
 #X text 430 348 +12;
-#X text 91 521 Note: The envelope table is linear while the VU meter
+#X text 92 524 Note: The envelope table is linear while the VU meter
 isn't \, hence the discrepancy between the scaling of the two.;
 #X obj 91 37 vsl 15 59 -30 30 0 1 empty \$0-gain dB_Gain -45 25 0 10
 -262144 -1 -1 2900 1;
@@ -263,6 +263,46 @@ isn't \, hence the discrepancy between the scaling of the two.;
 #X restore 52 156 pd 48kHz;
 #X text 115 154 Record audio here. A 16 bit 48kHz audio file will be
 saved to /tmp/;
+#N canvas 0 50 450 300 (subpatch) 0;
+#X array \$0-x-axis 100 float 2;
+#X coords 0 1 100 0 200 140 1 0 0;
+#X restore 510 182 graph;
+#N canvas 0 50 450 300 (subpatch) 0;
+#X array \$0-y-axis 100 float 2;
+#X coords 0 0 100 1 200 140 1 0 0;
+#X restore 509 347 graph;
+#N canvas 396 646 358 241 plot-pos 0;
+#X obj 57 107 list;
+#X obj 57 156 list trim;
+#X obj 57 129 list prepend 0;
+#X obj 80 76 list split 100;
+#X obj 200 107 list;
+#X obj 200 156 list trim;
+#X obj 200 129 list prepend 0;
+#X obj 223 76 list split 100;
+#X obj 57 30 r \$0-x;
+#X obj 57 182 s \$0-x-axis;
+#X obj 200 182 s \$0-y-axis;
+#X obj 200 30 r \$0-y;
+#X connect 0 0 2 0;
+#X connect 0 0 3 0;
+#X connect 1 0 9 0;
+#X connect 2 0 1 0;
+#X connect 3 0 0 1;
+#X connect 3 2 0 1;
+#X connect 4 0 6 0;
+#X connect 4 0 7 0;
+#X connect 5 0 10 0;
+#X connect 6 0 5 0;
+#X connect 7 0 4 1;
+#X connect 7 2 4 1;
+#X connect 8 0 0 0;
+#X connect 11 0 4 0;
+#X restore 638 150 pd plot-pos;
+#X text 717 312 left;
+#X text 718 175 right;
+#X text 717 341 top;
+#X text 716 478 bottom;
 #X connect 0 0 16 0;
 #X connect 9 0 8 0;
 #X connect 9 0 7 0;
@@ -277,8 +317,6 @@ saved to /tmp/;
 #X restore 32 509 pd diagnostic;
 #X obj 172 541 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
-#X text 133 499 Here you will find some tools to visualize the audio
-output of the object for better undserstanding and debugging.;
 #X floatatom 198 273 5 0 0 0 - - -;
 #X text 110 597 <--- here is where the sound synthesis would happen
 (see examples), f 68;
@@ -578,7 +616,6 @@ output of the object for better undserstanding and debugging.;
 #X connect 15 0 17 0;
 #X restore 30 705 pd gain;
 #X obj 70 442 unpack f f;
-#X text 177 466 x \, y;
 #X text 297 318 button pressed: 1 \, button released: 0;
 #X text 299 358 clockwise rotation: 1 \, counterclockwise: -1;
 #X text 300 372 360° rotation are 24 ticks;
@@ -685,34 +722,37 @@ to run this patch., f 80;
 #X text 138 122 See inside this subpatch for LED color control;
 #X text 89 749 It's good practice to protect the output from possible
 DC-offset with a lowpass filter., f 70;
-#X connect 7 0 28 0;
+#X text 133 499 Here you will find some tools to visualize the audio
+and data output of the object for better undserstanding and debugging.
+, f 64;
+#X connect 7 0 27 0;
 #X connect 10 0 11 0;
-#X connect 10 1 29 0;
-#X connect 10 2 30 0;
-#X connect 11 0 31 0;
-#X connect 12 0 34 0;
+#X connect 10 1 28 0;
+#X connect 10 2 29 0;
+#X connect 11 0 30 0;
+#X connect 12 0 33 0;
 #X connect 14 0 13 0;
 #X connect 14 1 15 0;
-#X connect 16 0 28 0;
+#X connect 16 0 27 0;
 #X connect 17 0 12 0;
 #X connect 17 1 10 0;
 #X connect 17 2 14 0;
-#X connect 17 3 26 0;
+#X connect 17 3 25 0;
 #X connect 19 0 18 0;
 #X connect 20 0 19 1;
-#X connect 21 0 33 1;
-#X connect 21 0 32 0;
-#X connect 22 0 46 0;
+#X connect 21 0 32 1;
+#X connect 21 0 31 0;
+#X connect 22 0 44 0;
 #X connect 23 0 22 0;
 #X connect 24 0 22 1;
-#X connect 28 0 23 0;
-#X connect 28 1 17 0;
-#X connect 28 1 19 0;
-#X connect 33 0 55 0;
-#X connect 33 2 48 0;
-#X connect 34 0 8 0;
-#X connect 34 1 9 0;
-#X connect 45 0 28 0;
-#X connect 46 0 33 0;
-#X connect 55 0 54 0;
-#X connect 55 0 54 1;
+#X connect 27 0 23 0;
+#X connect 27 1 17 0;
+#X connect 27 1 19 0;
+#X connect 32 0 53 0;
+#X connect 32 2 46 0;
+#X connect 33 0 8 0;
+#X connect 33 1 9 0;
+#X connect 43 0 27 0;
+#X connect 44 0 32 0;
+#X connect 53 0 52 0;
+#X connect 53 0 52 1;
