@@ -51,24 +51,15 @@ class tickle::Client {
   private:
     std::optional<DeviceHandle> _device_handle;
 
+    std::mutex _frame_mutex;
     isoc_frame _current_frame, _previous_frame;
 
     DSPState _dsp_state{DSPState::kUndefined};
     void _copy_samples();
-    
-    /*
-    static constexpr int32_t samples_per_chunk = 96;
-    static constexpr int32_t n_chunks = 16;
-    
-    struct chunk_t {
-        std::array<int16_t, samples_per_chunk + 4> samples;
-        uint16_t chunk_id;
-        int32_t n_valid_samples;
-    };*/
-    // chunk_t _silence_buffer;
-    std::atomic<uint16_t> _ring_size {96}; 
-    std::array<int16_t, 48000> _ring_buffer; // max capacity: 1s
-    // std::atomic<int32_t> _read_chunk{0}, _read_index{0}, _write_chunk{0};
+
+    static constexpr uint16_t RingbufferChunkSize {96};
+    std::atomic<uint16_t> _ring_size {RingbufferChunkSize}; 
+    std::array<int16_t, 48000> _ring_buffer;
     std::atomic<int32_t> _read_index {0}, _write_index {0};
     bool _skip {true};
 };

@@ -26,25 +26,18 @@ using namespace std::chrono_literals;
 #include <sys/ioctl.h>
 
 SharedDeviceManager::SharedDeviceManager() {
-    // fmt::print("{}\n", __PRETTY_FUNCTION__);
     _device = std::make_unique<Device>();
-    // _device_thread = std::thread([this]() { _start_device_monitoring(); });
     _device_thread = std::thread(&SharedDeviceManager::_spawn, this);
 }
 
 SharedDeviceManager::~SharedDeviceManager() {
-    // fmt::print("{}\n", __PRETTY_FUNCTION__);
-
     if (_keep_running) {
         _keep_running = false;
         _device_thread.join();
     }
-
-    // fmt::print("end {}\n", __PRETTY_FUNCTION__);
 }
 
 void SharedDeviceManager::_spawn() {
-    // fmt::print("{}\n", __PRETTY_FUNCTION__);
     _keep_running = true;
 
     do {
@@ -56,7 +49,6 @@ void SharedDeviceManager::_spawn() {
         return;
     }
 
-    // fmt::print("start streaming\n");
     isoc_frame previous_frame {
         .number = 0
     };
@@ -95,7 +87,6 @@ void SharedDeviceManager::_spawn() {
 }
 
 void SharedDeviceManager::_on_device_connection() {
-    // fmt::print("{}\n", __PRETTY_FUNCTION__);
     _device->set_connection(_kmod_fd);
     for (auto& client : _clients) {
         client->notify_device_was_connected(DeviceHandle{_device.get()});
@@ -103,7 +94,6 @@ void SharedDeviceManager::_on_device_connection() {
 }
 
 void SharedDeviceManager::_on_device_disconnection() {
-    // fmt::print("{}\n", __PRETTY_FUNCTION__);
     _device->set_connection(-1);
     for (auto& client : _clients) {
         client->notify_device_was_disconnected();
@@ -111,7 +101,6 @@ void SharedDeviceManager::_on_device_disconnection() {
 }
 
 void SharedDeviceManager::_connect_to_kmod() {
-    // fmt::print("{}\n", __PRETTY_FUNCTION__);
     fs::path tickle_character_device{"/dev/tickle"};
 
     if (not fs::exists(tickle_character_device)) {
@@ -157,8 +146,6 @@ void SharedDeviceManager::dispose_client(ClientHandle client) {
 }
 
 void SharedDeviceManager::set_color(uint32_t index, uint32_t color) {
-    // fmt::print("{}:{}\n", idx, color);
-
     MiniBuffer buffer;
     uint32_t* index_ptr = reinterpret_cast<uint32_t*>(&buffer.data[0]);
     uint32_t* color_ptr = reinterpret_cast<uint32_t*>(&buffer.data[4]);
