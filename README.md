@@ -19,10 +19,10 @@ $ meson build -Dinstall_dir=/my/install/dir
 
 $ meson configure build -Dinstall_dir=/my/install/dir
 
-# build
+# a: build only
 
 $ ninja -C build
 
-# install
+# b build and install
 
 $ ninja -C build install
