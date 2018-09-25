@@ -49,9 +49,7 @@ void SharedDeviceManager::_spawn() {
         return;
     }
 
-    isoc_frame previous_frame {
-        .number = 0
-    };
+    isoc_frame previous_frame{.number = 0};
     bool did_post_error{false};
     while (_keep_running) {
         isoc_frame current_frame;
@@ -146,6 +144,10 @@ void SharedDeviceManager::dispose_client(ClientHandle client) {
 }
 
 void SharedDeviceManager::set_color(uint32_t index, uint32_t color) {
+    if (not _device->is_connected()) {
+        return;
+    }
+
     MiniBuffer buffer;
     uint32_t* index_ptr = reinterpret_cast<uint32_t*>(&buffer.data[0]);
     uint32_t* color_ptr = reinterpret_cast<uint32_t*>(&buffer.data[4]);
