@@ -20,26 +20,13 @@
 
 #include <m_pd.h>
 
-#include <fmt/format.h>
-#include <cmath>
-
-#include <array>
-#include <atomic>
+#include <cstring>
 #include <chrono>
-#include <mutex>
 #include <thread>
-#include <sstream>
 using namespace std::chrono_literals;
 
-#ifdef _WIN32
-#define __PRETTY_FUNCTION__ __FUNCTION__
-#define DLLEXPORT __declspec(dllexport)
-#else
-#define DLLEXPORT
-#endif
-
 extern "C" {
-DLLEXPORT void tickle_tilde_setup(void);
+void tickle_tilde_setup(void);
 }
 
 #include "./device.h++"
@@ -70,10 +57,9 @@ typedef struct _tickle {
     bool is_active;
     bool keep_polling;
     uint16_t latency;
-    
+
     ClientHandle client;
-    bool debug;
-    
+
 } tickle_t;
 
 /* -------------- forward decls ---------------- */
@@ -96,15 +82,9 @@ static void* tickle_new(t_symbol* s, int argc, t_atom* argv) {
     self->keep_polling = false;
 
     self->client = shared_device_manager.create_client();
-    
+
     self->latency = 0;
-    self->debug = false;
-    if (argc != 0) {
-        if (gensym("debug") == atom_gensym(&argv[0])) {
-            self->debug = true;
-        }
-    }
-    
+
     return (void*)self;
 }
 
@@ -179,13 +159,14 @@ static void tickle_bang(tickle_t* self) {
         SETFLOAT(&button_out[1], button.value);
         outlet_anything(self->data_out, gensym("button"), 2, button_out.data());
     }
-    
+
     auto ring_size = self->client->get_ring_size();
     if (self->latency != ring_size) {
         self->latency = ring_size;
         std::array<t_atom, 1> latency_out;
         SETFLOAT(&latency_out[0], self->latency);
-        outlet_anything(self->data_out, gensym("latency"), 1, latency_out.data());
+        outlet_anything(self->data_out, gensym("latency"), 1,
+                        latency_out.data());
     }
 }
 
@@ -220,12 +201,12 @@ static t_int* tickle_dsp_perform_audio_out(t_int* w) {
     tickle_t* self = (tickle_t*)(w[1]);
     t_sample* out = (t_sample*)(w[2]);
     int n_samples = (int)(w[3]);
-    
-    self->client->fill_audio_buffer(out, n_samples);    
+
+    self->client->fill_audio_buffer(out, n_samples);
     if (not self->is_active || not self->client->has_device()) {
         memset(out, 0, n_samples * sizeof(t_sample));
     }
-    
+
     return (w + 4);
 }
 
@@ -239,7 +220,7 @@ static void tickle_dsp_setup(tickle_t* self, t_signal** sp) {
         error("device is not active");
         return;
     } */
-    
+
     if (sp[0]->s_sr != 48000) {
         error("tickle~ is best served at 48khz");
     }
@@ -260,7 +241,7 @@ void tickle_led(tickle_t* self, float index, float r, float g, float b) {
     shared_device_manager.set_color(index, color);
 }
 
-void tickle_tilde_setup(void) {
+void tickle_tilde_setup() {
     tickle_tilde_class = reinterpret_cast<t_class*>(class_new(
         gensym("tickle~"), (t_newmethod)tickle_new, (t_method)tickle_delete,
         sizeof(tickle_t), (t_atomtype)CLASS_DEFAULT, A_GIMME, (t_atomtype)0));
