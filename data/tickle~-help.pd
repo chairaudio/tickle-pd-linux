@@ -1,4 +1,4 @@
-#N canvas 726 206 677 880 10;
+#N canvas 726 206 677 932 10;
 #X declare -lib pddp;
 #X obj 19 498 cnv 15 540 40 empty empty empty 20 12 0 14 -103858 -66577
 0;
@@ -42,12 +42,12 @@ instrument;
 #X msg 51 102 info;
 #X obj 91 212 print tickletilde;
 #X obj 91 191 spigot 0;
-#X obj 136 173 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+#X obj 136 173 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
 #X obj 102 638 vsl 15 59 -30 30 0 1 empty \$0-main dB_Gain -45 25 0
-10 -262144 -1 -1 2900 1;
+10 -262144 -1 -1 3500 1;
 #N canvas 1100 627 735 338 feedback-cancellation 0;
-#X obj 65 43 inlet~;
+#X obj 66 9 inlet~;
 #X obj 66 236 outlet~;
 #X obj 100 94 hilbert~;
 #X floatatom 168 101 5 0 0 0 - - -;
@@ -66,8 +66,9 @@ with Vanilla Pd. You can find them in the "extra" folder of Pd.;
 shift) which is efficiently removing feedback.;
 #X text 316 44 The audio output through speakers may be picked up by
 the Tickle and sometimes issues with feedback occur.;
-#X connect 0 0 2 0;
+#X obj 99 53 hip~ 4;
 #X connect 0 0 8 0;
+#X connect 0 0 15 0;
 #X connect 2 0 4 0;
 #X connect 2 1 4 1;
 #X connect 3 0 4 2;
@@ -79,6 +80,7 @@ the Tickle and sometimes issues with feedback occur.;
 #X connect 8 0 1 0;
 #X connect 9 0 1 0;
 #X connect 10 0 8 1;
+#X connect 15 0 2 0;
 #X restore 31 562 pd feedback-cancellation;
 #N canvas 443 443 775 588 diagnostic 0;
 #X obj 18 15 inlet~;
@@ -314,7 +316,7 @@ saved to /tmp/;
 #X connect 21 0 10 0;
 #X connect 21 0 9 0;
 #X restore 32 512 pd diagnostic;
-#X obj 172 544 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 172 544 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
 #X floatatom 201 289 5 0 0 0 - - -;
 #X text 110 600 <--- here is where the sound synthesis would happen
@@ -322,7 +324,7 @@ saved to /tmp/;
 #X obj 31 161 tickle~;
 #N canvas 325 400 432 210 slidr 0;
 #X obj 105 121 hsl 48 15 0 1 0 0 empty empty empty -2 -8 0 10 -262144
--1 -1 0 1;
+-1 -1 196 1;
 #X obj 175 3 inlet;
 #X obj 175 72 + 1;
 #X obj 175 46 f;
@@ -532,7 +534,7 @@ saved to /tmp/;
 #X connect 18 0 14 0;
 #X connect 19 0 16 0;
 #X restore 184 340 pd rgb2pd;
-#X obj 102 121 cnv 15 52 15 empty \$0-wheel rotary 5 7 0 11 -258241
+#X obj 102 121 cnv 15 52 15 empty \$0-wheel rotary 5 7 0 11 -258052
 -262144 0;
 #X obj 184 9 inlet;
 #X obj 184 94 + 1;
