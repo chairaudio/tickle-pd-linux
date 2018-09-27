@@ -1,4 +1,10 @@
-# prerequisites
+This Pure Data external provides access to the Tickle instrument by The Center for Haptic Audio Interaction Research (CHAIR) inside Pure Data.
+
+This git lives at https://gitlab.chair.audio/chair-audio/tickle-pd-linux (private)
+
+and is pushed automatically to https://github.com/chairaudio/tickle-pd-linux
+
+## prerequisites
 
 meson
 
@@ -19,10 +25,18 @@ $ meson build -Dinstall_dir=/my/install/dir
 
 $ meson configure build -Dinstall_dir=/my/install/dir
 
-# a) build only
+# build
+## a) build only
 
 $ ninja -C build
 
-# b) build and install
+## b) build and install
 
 $ ninja -C build install
+
+# License and trademark
+
+This software is copyright 2018 The Center for Haptic Audio Interaction Research (CHAIR).
+It is licensed under a GPL-3 licence.
+
+The CHAIR name and logo are registered trademarks and may not be used unauthorized.
