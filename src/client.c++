@@ -6,10 +6,8 @@ using tickle::DeviceHandle;
 using tickle::NormalizedPosition;
 using tickle::Position;
 
-#include <cstring>
-
 Client::Client() {
-    memset(_ring_buffer.data(), 0, _ring_buffer.size() * 2);
+    _ring_buffer.fill(0);
 }
 
 void Client::notify_device_was_connected(DeviceHandle device_handle) {
@@ -146,6 +144,9 @@ void Client::fill_audio_buffer(float* out, uint32_t n_samples) {
     }
 
     if (distance < 0 || distance > _ring_size) {
+        if (_ring_size == MaxRingbufferCapacity) {
+            return;
+        }
         _ring_size += RingbufferChunkSize;
         _dsp_state = DSPState::kWillStart;
     }
