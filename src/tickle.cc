@@ -129,7 +129,8 @@ static void tickle_bang(tickle_t* self) {
         SETFLOAT(&position_out[0], 0);
         SETFLOAT(&position_out[1], position.x);
         SETFLOAT(&position_out[2], position.y);
-        outlet_anything(self->data_out, gensym("pos"), 3, position_out.data());
+        outlet_anything(self->data_out, gensym("position"), 3,
+                        position_out.data());
     }
 
     if (changes.touch) {
