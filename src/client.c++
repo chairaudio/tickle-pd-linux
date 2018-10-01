@@ -52,11 +52,16 @@ Client::FrameChanges Client::compare_frames() {
         changes.position = {};
     }
 
+    if (changes.touch && not is_down) {
+        changes.position = {-1.f, -1.f};
+    }
+
     for (int8_t rotary_index = 0; rotary_index < int8_t(changes.rotary.size());
          ++rotary_index) {
-        if (_previous_frame.quad_encoder[rotary_index] != current.quad_encoder[rotary_index]) {
-            auto clockwise =
-                current.quad_encoder[rotary_index] > _previous_frame.quad_encoder[rotary_index];
+        if (_previous_frame.quad_encoder[rotary_index] !=
+            current.quad_encoder[rotary_index]) {
+            auto clockwise = current.quad_encoder[rotary_index] >
+                             _previous_frame.quad_encoder[rotary_index];
             if (abs(_previous_frame.quad_encoder[rotary_index] -
                     current.quad_encoder[rotary_index]) > 64) {
                 clockwise = not clockwise;
@@ -93,8 +98,8 @@ void Client::_copy_samples() {
     if (_dsp_state == DSPState::kUndefined) {
         return;
     }
-    
-    std::lock_guard guard {_frame_mutex};
+
+    std::lock_guard guard{_frame_mutex};
     for (auto idx = 0; idx < _current_frame.n_samples; ++idx) {
         _ring_buffer[_write_index % _ring_size] = _current_frame.samples[idx];
         ++_write_index;
@@ -106,7 +111,7 @@ void Client::fill_audio_buffer(float* out, uint32_t n_samples) {
         return;
     }
 
-    std::lock_guard guard {_frame_mutex};
+    std::lock_guard guard{_frame_mutex};
     if (_dsp_state == DSPState::kWillStart) {
         _read_index = -_ring_size / 2;
         _write_index = 0;
@@ -115,18 +120,19 @@ void Client::fill_audio_buffer(float* out, uint32_t n_samples) {
         }
     }
 
- 
     int32_t distance = _write_index - _read_index;
     int32_t target_distance = _ring_size / 2;
 
-    float sample {0};
+    float sample{0};
     bool needs_skip = distance < target_distance;
     for (uint32_t sample_idx = 0; sample_idx < n_samples; ++sample_idx) {
         if (_read_index >= 0) {
-            sample = static_cast<float>(_ring_buffer[_read_index % _ring_size]) / 32768.f;            
+            sample =
+                static_cast<float>(_ring_buffer[_read_index % _ring_size]) /
+                32768.f;
         }
         out[sample_idx] = sample;
-        
+
         // read less than required
         if (needs_skip && _read_index >= 0) {
             needs_skip = false;
@@ -138,10 +144,9 @@ void Client::fill_audio_buffer(float* out, uint32_t n_samples) {
     if (_read_index < 0) {
         return;
     }
-    
+
     if (distance < 0 || distance > _ring_size) {
         _ring_size += RingbufferChunkSize;
         _dsp_state = DSPState::kWillStart;
     }
 }
-
