@@ -1,10 +1,10 @@
-#N canvas 726 206 677 932 10;
+#N canvas 726 206 583 857 10;
 #X declare -lib pddp;
-#X obj 19 498 cnv 15 540 40 empty empty empty 20 12 0 14 -103858 -66577
+#X obj 19 483 cnv 15 540 40 empty empty empty 20 12 0 14 -103858 -66577
 0;
-#X obj 19 543 cnv 15 540 40 empty empty empty 20 12 0 14 -161266 -66577
+#X obj 19 528 cnv 15 540 40 empty empty empty 20 12 0 14 -161266 -66577
 0;
-#X obj 19 588 cnv 15 540 40 empty empty empty 20 12 0 14 -206578 -66577
+#X obj 19 573 cnv 15 540 40 empty empty empty 20 12 0 14 -206578 -66577
 0;
 #N canvas 4 579 453 298 META 0;
 #X text 40 153 LIBRARY internal;
@@ -20,32 +20,32 @@
 #X text 38 56 DESCRIPTION Tickle hardware vibration sensor controller
 instrument;
 #X obj 285 14 declare -lib pddp;
-#X restore 413 831 pd META;
+#X restore 413 816 pd META;
 #X obj 18 147 cnv 15 80 40 empty empty empty 20 12 0 14 -252850 -66577
 0;
-#X obj 188 284 cnv 15 370 25 empty empty empty 20 12 0 14 -262130 -66577
+#X obj 219 266 cnv 15 340 25 empty empty empty 20 12 0 14 -262130 -66577
 0;
-#X obj 102 352 cnv 15 460 75 empty empty empty 20 12 0 14 -262130 -66577
+#X obj 102 337 cnv 15 460 75 empty empty empty 20 12 0 14 -262130 -66577
 0;
-#X obj 31 76 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1 1
+#X obj 31 76 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0 1
 ;
-#X floatatom 70 472 5 0 0 1 x - #0-x;
-#X floatatom 127 472 5 0 0 1 y - #0-y;
-#X obj 113 357 route 0 1 2;
-#X floatatom 113 386 5 0 0 0 - - -;
-#X obj 70 430 route 0;
-#X obj 157 333 tgl 15 0 empty empty up 17 7 0 10 -262144 -1 -1 0 1
+#X floatatom 70 457 5 0 0 1 x - #0-x;
+#X floatatom 127 457 5 0 0 1 y - #0-y;
+#X obj 123 342 route 0 1 2;
+#X floatatom 123 371 5 0 0 0 - - -;
+#X obj 70 415 route 0;
+#X obj 176 318 tgl 15 0 empty empty up 17 7 0 10 -262144 -1 -1 0 1
 ;
-#X obj 157 312 route up down;
-#X obj 194 333 tgl 15 0 empty empty down 17 7 0 10 -262144 -1 -1 0
+#X obj 176 297 route up down;
+#X obj 213 318 tgl 15 0 empty empty down 17 7 0 10 -262144 -1 -1 0
 1;
 #X msg 51 102 info;
 #X obj 91 212 print tickletilde;
 #X obj 91 191 spigot 0;
 #X obj 136 173 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
-#X obj 102 638 vsl 15 59 -30 30 0 1 empty \$0-main dB_Gain -45 25 0
-10 -262144 -1 -1 3500 1;
+#X obj 102 623 vsl 15 59 -30 30 0 1 empty \$0-main dB_Gain -45 25 0
+10 -262144 -1 -1 2900 1;
 #N canvas 1100 627 735 338 feedback-cancellation 0;
 #X obj 66 9 inlet~;
 #X obj 66 236 outlet~;
@@ -81,7 +81,7 @@ the Tickle and sometimes issues with feedback occur.;
 #X connect 9 0 1 0;
 #X connect 10 0 8 1;
 #X connect 15 0 2 0;
-#X restore 31 562 pd feedback-cancellation;
+#X restore 31 547 pd feedback-cancellation;
 #N canvas 443 443 775 588 diagnostic 0;
 #X obj 18 15 inlet~;
 #X obj 20 533 outlet~;
@@ -315,16 +315,15 @@ saved to /tmp/;
 #X connect 16 2 17 0;
 #X connect 21 0 10 0;
 #X connect 21 0 9 0;
-#X restore 32 512 pd diagnostic;
-#X obj 172 544 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+#X restore 32 497 pd diagnostic;
+#X obj 172 529 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
-#X floatatom 201 289 5 0 0 0 - - -;
-#X text 110 600 <--- here is where the sound synthesis would happen
+#X text 110 585 <--- here is where the sound synthesis would happen
 (see examples), f 68;
 #X obj 31 161 tickle~;
 #N canvas 325 400 432 210 slidr 0;
 #X obj 105 121 hsl 48 15 0 1 0 0 empty empty empty -2 -8 0 10 -262144
--1 -1 196 1;
+-1 -1 0 1;
 #X obj 175 3 inlet;
 #X obj 175 72 + 1;
 #X obj 175 46 f;
@@ -340,7 +339,7 @@ saved to /tmp/;
 #X connect 5 0 6 0;
 #X connect 6 0 0 0;
 #X coords 0 -1 1 1 58 40 1 100 100;
-#X restore 150 385 pd slidr;
+#X restore 160 370 pd slidr;
 #N canvas 30 365 600 496 clrwl 0;
 #N canvas 416 439 393 665 hsv2rgb 0;
 #X msg 48 59 \$2 \$3 \$1;
@@ -570,10 +569,10 @@ saved to /tmp/;
 #X connect 17 0 18 0;
 #X connect 18 0 1 0;
 #X coords 0 -1 1 1 58 40 1 100 100;
-#X restore 210 385 pd clrwl;
-#X obj 113 407 bng 15 50 10 0 empty empty empty 17 7 0 10 -262144 -1
+#X restore 220 370 pd clrwl;
+#X obj 123 392 bng 15 50 10 0 empty empty empty 17 7 0 10 -262144 -1
 -1;
-#X floatatom 102 706 5 0 0 0 dB - -;
+#X floatatom 102 691 5 0 0 0 dB - -;
 #N canvas 3194 353 338 612 gain 0;
 #X obj 32 26 inlet~;
 #X obj 33 373 outlet~;
@@ -615,17 +614,16 @@ saved to /tmp/;
 #X connect 13 0 18 0;
 #X connect 14 0 15 0;
 #X connect 15 0 17 0;
-#X restore 30 705 pd gain;
-#X obj 70 451 unpack f f;
-#X text 297 333 button pressed: 1 \, button released: 0;
-#X text 299 371 clockwise rotation: 1 \, counterclockwise: -1;
-#X text 300 385 360° rotation are 24 ticks;
-#X text 260 287 Touch on surface;
-#X text 262 315 Buttons;
+#X restore 30 690 pd gain;
+#X obj 70 436 unpack f f;
+#X text 316 318 button pressed: 1 \, button released: 0;
+#X text 293 367 clockwise rotation: 1 \, counterclockwise: -1;
+#X text 294 381 360° rotation are 24 ticks;
+#X text 281 300 Buttons;
 #X text 88 102 Prints out information about the connected hardware
 ;
-#X text 257 454 Position on surface;
-#X text 259 356 Rotary controller;
+#X text 195 426 Position on surface;
+#X text 269 341 Rotary controller;
 #X text 57 75 1 starts polling data \, 0 stops it.;
 #N canvas 175 211 475 752 LED 0;
 #X obj 30 710 outlet;
@@ -686,13 +684,13 @@ saved to /tmp/;
 the synthesis would happen in your patch. Please refer to the example
 patches to see the synthesis in action.;
 #X connect 0 0 1 0;
-#X restore 31 602 pd synthesis;
+#X restore 31 587 pd synthesis;
 #X text 157 173 Print all messages to console;
-#X obj 69 725 bng 15 250 50 0 empty empty clipping 18 9 0 10 -262144
+#X obj 69 710 bng 15 250 50 0 empty empty clipping 18 9 0 10 -262144
 -258113 -1;
-#X text 115 658 -> 0;
-#X text 114 690 -> -30;
-#X text 114 628 -> +30;
+#X text 115 643 -> 0;
+#X text 114 675 -> -30;
+#X text 114 613 -> +30;
 #N canvas 1291 646 450 300 set 0;
 #X obj 146 16 loadbang;
 #X obj 146 121 s \$0-main;
@@ -701,17 +699,15 @@ patches to see the synthesis in action.;
 #X connect 0 0 2 0;
 #X connect 2 0 1 0;
 #X connect 2 0 3 0;
-#X restore 496 753 pd set;
-#X obj 22 743 cnv 15 540 40 empty empty empty 20 12 0 14 -255794 -66577
+#X restore 496 738 pd set;
+#X obj 22 728 cnv 15 540 40 empty empty empty 20 12 0 14 -255794 -66577
 0;
-#X obj 31 785 dac~;
-#X obj 31 754 hip~ 4;
-#X text 191 550 Live situations or speakers on the same surface can
+#X obj 31 770 dac~;
+#X obj 31 739 hip~ 4;
+#X text 191 535 Live situations or speakers on the same surface can
 cause feedback. A cheap method to remove it is within., f 54;
-#X text 287 469 Range: 0 to 1 0 \, 0 is in the left bottom of the surface
-;
-#X obj 411 810 pddplink https://chair.audio;
-#X text 28 804 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ The
+#X obj 411 795 pddplink https://chair.audio;
+#X text 28 789 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ The
 Center for Haptic Audio Interaction Research 2018 ~~~~~~~~~~~~~~~~~~~~~~~
 https://chair.audio ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 , f 48;
@@ -721,44 +717,45 @@ of 64, f 81;
 #X text 28 10 A driver installation and the Tickle hardware are neccessary
 to run this patch., f 80;
 #X text 138 122 See inside this subpatch for LED color control;
-#X text 89 749 It's good practice to protect the output from possible
+#X text 89 734 It's good practice to protect the output from possible
 DC-offset with a lowpass filter., f 70;
-#X text 133 502 Here you will find some tools to visualize the audio
+#X text 133 487 Here you will find some tools to visualize the audio
 and data output of the object for better undserstanding and debugging.
 , f 64;
-#X obj 70 240 route pos rotary button touch latency;
-#X floatatom 245 265 5 0 0 1 Samples - -;
-#X text 374 269 Latency is around half of this.;
-#X text 332 258 Size of ringbuffer;
-#X connect 7 0 26 0;
+#X floatatom 229 269 5 0 0 1 Samples - -;
+#X text 320 264 Size of ringbuffer;
+#X obj 70 240 route position rotary button latency;
+#X text 225 441 Range: 0 to 1 0 \, 0 is in the left bottom of the surface
+-1 if no touch is detected;
+#X text 329 275 actual latency is around half of this;
+#X connect 7 0 25 0;
 #X connect 10 0 11 0;
-#X connect 10 1 27 0;
-#X connect 10 2 28 0;
-#X connect 11 0 29 0;
-#X connect 12 0 32 0;
+#X connect 10 1 26 0;
+#X connect 10 2 27 0;
+#X connect 11 0 28 0;
+#X connect 12 0 31 0;
 #X connect 14 0 13 0;
 #X connect 14 1 15 0;
-#X connect 16 0 26 0;
+#X connect 16 0 25 0;
 #X connect 18 0 17 0;
 #X connect 19 0 18 1;
-#X connect 20 0 31 1;
-#X connect 20 0 30 0;
-#X connect 21 0 43 0;
+#X connect 20 0 30 1;
+#X connect 20 0 29 0;
+#X connect 21 0 41 0;
 #X connect 22 0 21 0;
 #X connect 23 0 21 1;
-#X connect 26 0 22 0;
-#X connect 26 1 18 0;
-#X connect 26 1 62 0;
-#X connect 31 0 52 0;
-#X connect 31 2 45 0;
-#X connect 32 0 8 0;
-#X connect 32 1 9 0;
-#X connect 42 0 26 0;
-#X connect 43 0 31 0;
-#X connect 52 0 51 0;
-#X connect 52 0 51 1;
-#X connect 62 0 12 0;
-#X connect 62 1 10 0;
-#X connect 62 2 14 0;
-#X connect 62 3 24 0;
-#X connect 62 4 63 0;
+#X connect 25 0 22 0;
+#X connect 25 1 18 0;
+#X connect 25 1 61 0;
+#X connect 30 0 50 0;
+#X connect 30 2 43 0;
+#X connect 31 0 8 0;
+#X connect 31 1 9 0;
+#X connect 40 0 25 0;
+#X connect 41 0 30 0;
+#X connect 50 0 49 0;
+#X connect 50 0 49 1;
+#X connect 61 0 12 0;
+#X connect 61 1 10 0;
+#X connect 61 2 14 0;
+#X connect 61 3 59 0;
