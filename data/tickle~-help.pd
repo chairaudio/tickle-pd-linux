@@ -1,4 +1,4 @@
-#N canvas 192 259 881 857 10;
+#N canvas 192 259 853 857 10;
 #X declare -lib pddp;
 #X obj 19 483 cnv 15 540 40 empty empty empty 20 12 0 14 -103858 -66577
 0;
@@ -27,21 +27,21 @@ instrument;
 0;
 #X obj 106 365 cnv 15 450 70 empty empty empty 20 12 0 14 -262130 -66577
 0;
-#X obj 31 76 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1 1
+#X obj 31 76 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0 1
 ;
 #X floatatom 123 417 6 0 0 1 x - #0-x;
 #X floatatom 180 417 6 0 0 1 y - #0-y;
 #X obj 176 295 route 0 1 2;
 #X floatatom 176 322 5 0 0 0 - - -;
 #X obj 123 369 route 0;
-#X obj 70 463 tgl 15 0 empty empty up 17 7 0 10 -262144 -1 -1 1 1;
+#X obj 70 463 tgl 15 0 empty empty up 17 7 0 10 -262144 -1 -1 0 1;
 #X obj 70 442 route up down;
 #X obj 107 463 tgl 15 0 empty empty down 17 7 0 10 -262144 -1 -1 0
 1;
 #X msg 51 102 info;
 #X obj 91 212 print tickletilde;
 #X obj 91 191 spigot 0;
-#X obj 136 173 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+#X obj 136 173 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
 #X obj 102 623 vsl 15 59 -30 30 0 1 empty \$0-main dB_Gain -45 25 0
 10 -262144 -1 -1 2900 1;
@@ -326,7 +326,7 @@ saved to /tmp/;
 #X obj 31 161 tickle~;
 #N canvas 325 400 432 210 slidr 0;
 #X obj 105 121 hsl 48 15 0 1 0 0 empty empty empty -2 -8 0 10 -262144
--1 -1 392 1;
+-1 -1 0 1;
 #X obj 175 3 inlet;
 #X obj 175 72 + 1;
 #X obj 175 46 f;
@@ -729,11 +729,11 @@ and data output of the object for better undserstanding and debugging.
 #X text 228 376 Touch position on surface;
 #X obj 571 43 cnv 15 270 800 empty empty empty 20 12 0 14 -228856 -66577
 0;
-#X obj 591 419 chair.gesture;
+#X obj 752 372 chair.gesture;
 #X obj 601 709 chair.gain~;
 #X obj 593 546 chair.feedback-cancellation~;
-#X obj 591 374 chair.hex-mapping;
-#X obj 591 396 chair.hex-tuning;
+#X obj 591 397 chair.hex-mapping;
+#X obj 591 419 chair.hex-tuning;
 #X text 576 354 Process position data:;
 #X obj 592 311 chair.rotary-limit-range;
 #X text 577 290 Process rotary data:;
@@ -743,9 +743,8 @@ and data output of the object for better undserstanding and debugging.
 #X text 574 578 Envelope with zero latency:;
 #X text 572 689 Gain control with clipping warner:;
 #X obj 70 240 route button position rotary latency;
-#X text 350 313 clockwise rotation: 1 \, counterclockwise: -1;
 #X text 574 49 This collumn introduces useful abstractions in the context
-of the process left of it.;
+of the process left of it., f 43;
 #X text 572 440 Use buttons to transpose:;
 #X obj 591 457 chair.transpose-octave;
 #X obj 589 170 faketickle~;
@@ -753,8 +752,11 @@ of the process left of it.;
 #X text 574 649 Compressor and expander:;
 #X text 580 789 A complete list of abstractions is in;
 #X obj 603 810 chair.intro;
+#X text 350 313 clockwise rotation: 1 \, counterclockwise: -1, f 23
+;
 #X text 267 392 range: 0 to 1 0 0 is in the left bottom of the surface
--1 if no touch is detected;
+-1 if no touch is detected, f 41;
+#X obj 591 373 chair.capsense;
 #X connect 7 0 25 0;
 #X connect 10 0 11 0;
 #X connect 10 1 26 0;
