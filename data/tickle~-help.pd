@@ -1,4 +1,4 @@
-#N canvas 726 206 583 857 10;
+#N canvas 192 259 853 857 10;
 #X declare -lib pddp;
 #X obj 19 483 cnv 15 540 40 empty empty empty 20 12 0 14 -103858 -66577
 0;
@@ -23,21 +23,20 @@ instrument;
 #X restore 413 816 pd META;
 #X obj 18 147 cnv 15 80 40 empty empty empty 20 12 0 14 -252850 -66577
 0;
-#X obj 219 266 cnv 15 340 25 empty empty empty 20 12 0 14 -262130 -66577
+#X obj 218 266 cnv 15 340 25 empty empty empty 20 12 0 14 -262130 -66577
 0;
-#X obj 102 337 cnv 15 460 75 empty empty empty 20 12 0 14 -262130 -66577
+#X obj 106 365 cnv 15 450 70 empty empty empty 20 12 0 14 -262130 -66577
 0;
 #X obj 31 76 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0 1
 ;
-#X floatatom 70 457 5 0 0 1 x - #0-x;
-#X floatatom 127 457 5 0 0 1 y - #0-y;
-#X obj 123 342 route 0 1 2;
-#X floatatom 123 371 5 0 0 0 - - -;
-#X obj 70 415 route 0;
-#X obj 176 318 tgl 15 0 empty empty up 17 7 0 10 -262144 -1 -1 0 1
-;
-#X obj 176 297 route up down;
-#X obj 213 318 tgl 15 0 empty empty down 17 7 0 10 -262144 -1 -1 0
+#X floatatom 123 417 6 0 0 1 x - #0-x;
+#X floatatom 180 417 6 0 0 1 y - #0-y;
+#X obj 176 295 route 0 1 2;
+#X floatatom 176 322 5 0 0 0 - - -;
+#X obj 123 369 route 0;
+#X obj 70 463 tgl 15 0 empty empty up 17 7 0 10 -262144 -1 -1 0 1;
+#X obj 70 442 route up down;
+#X obj 107 463 tgl 15 0 empty empty down 17 7 0 10 -262144 -1 -1 0
 1;
 #X msg 51 102 info;
 #X obj 91 212 print tickletilde;
@@ -47,26 +46,26 @@ instrument;
 #X obj 102 623 vsl 15 59 -30 30 0 1 empty \$0-main dB_Gain -45 25 0
 10 -262144 -1 -1 2900 1;
 #N canvas 1100 627 735 338 feedback-cancellation 0;
-#X obj 66 9 inlet~;
-#X obj 66 236 outlet~;
-#X obj 100 94 hilbert~;
-#X floatatom 168 101 5 0 0 0 - - -;
-#X obj 99 122 complex-mod~;
-#X msg 168 78 50;
-#X obj 168 55 loadbang;
-#X obj 242 52 inlet;
-#X obj 66 205 *~ 1;
-#X obj 100 205 *~ 0;
-#X obj 158 175 == 0;
-#X text 318 181 hilbert~ and complex-mod~ are abstractions which come
+#X obj 38 15 inlet~;
+#X obj 38 242 outlet~;
+#X obj 72 100 hilbert~;
+#X floatatom 140 107 5 0 0 0 - - -;
+#X obj 71 128 complex-mod~;
+#X msg 140 84 50;
+#X obj 140 61 loadbang;
+#X obj 214 58 inlet;
+#X obj 38 211 *~ 1;
+#X obj 72 211 *~ 0;
+#X obj 130 181 == 0;
+#X text 290 187 hilbert~ and complex-mod~ are abstractions which come
 with Vanilla Pd. You can find them in the "extra" folder of Pd.;
-#X text 317 85 If there is acoustc feedback \, activate this subpatch.
+#X text 289 91 If there is acoustc feedback \, activate this subpatch.
 ;
-#X text 318 128 It performs a uniform frequency shift (not a pitch
+#X text 290 134 It performs a uniform frequency shift (not a pitch
 shift) which is efficiently removing feedback.;
-#X text 316 44 The audio output through speakers may be picked up by
+#X text 288 50 The audio output through speakers may be picked up by
 the Tickle and sometimes issues with feedback occur.;
-#X obj 99 53 hip~ 4;
+#X obj 71 59 hip~ 4;
 #X connect 0 0 8 0;
 #X connect 0 0 15 0;
 #X connect 2 0 4 0;
@@ -82,7 +81,7 @@ the Tickle and sometimes issues with feedback occur.;
 #X connect 10 0 8 1;
 #X connect 15 0 2 0;
 #X restore 31 547 pd feedback-cancellation;
-#N canvas 443 443 775 588 diagnostic 0;
+#N canvas 550 492 775 588 diagnostic 0;
 #X obj 18 15 inlet~;
 #X obj 20 533 outlet~;
 #N canvas 1 681 450 300 (subpatch) 0;
@@ -272,7 +271,7 @@ saved to /tmp/;
 #X array \$0-y-axis 100 float 2;
 #X coords 0 0 100 1 200 140 1 0 0;
 #X restore 499 347 graph;
-#N canvas 396 646 358 241 plot-pos 0;
+#N canvas 396 646 353 241 plot-pos 0;
 #X obj 57 107 list;
 #X obj 57 156 list trim;
 #X obj 57 129 list prepend 0;
@@ -281,10 +280,12 @@ saved to /tmp/;
 #X obj 200 156 list trim;
 #X obj 200 129 list prepend 0;
 #X obj 223 76 list split 100;
-#X obj 57 30 r \$0-x;
+#X obj 19 9 r \$0-x;
 #X obj 57 182 s \$0-x-axis;
 #X obj 200 182 s \$0-y-axis;
-#X obj 200 30 r \$0-y;
+#X obj 161 10 r \$0-y;
+#X obj 161 36 moses 0;
+#X obj 18 37 moses 0;
 #X connect 0 0 2 0;
 #X connect 0 0 3 0;
 #X connect 1 0 9 0;
@@ -297,8 +298,10 @@ saved to /tmp/;
 #X connect 6 0 5 0;
 #X connect 7 0 4 1;
 #X connect 7 2 4 1;
-#X connect 8 0 0 0;
-#X connect 11 0 4 0;
+#X connect 8 0 13 0;
+#X connect 11 0 12 0;
+#X connect 12 1 4 0;
+#X connect 13 1 0 0;
 #X restore 628 150 pd plot-pos;
 #X text 707 312 left;
 #X text 708 175 right;
@@ -339,7 +342,7 @@ saved to /tmp/;
 #X connect 5 0 6 0;
 #X connect 6 0 0 0;
 #X coords 0 -1 1 1 58 40 1 100 100;
-#X restore 160 370 pd slidr;
+#X restore 213 321 pd slidr;
 #N canvas 30 365 600 496 clrwl 0;
 #N canvas 416 439 393 665 hsv2rgb 0;
 #X msg 48 59 \$2 \$3 \$1;
@@ -533,7 +536,7 @@ saved to /tmp/;
 #X connect 18 0 14 0;
 #X connect 19 0 16 0;
 #X restore 184 340 pd rgb2pd;
-#X obj 102 121 cnv 15 52 15 empty \$0-wheel rotary 5 7 0 11 -258052
+#X obj 102 121 cnv 15 52 15 empty \$0-wheel rotary 5 7 0 11 -241601
 -262144 0;
 #X obj 184 9 inlet;
 #X obj 184 94 + 1;
@@ -569,8 +572,8 @@ saved to /tmp/;
 #X connect 17 0 18 0;
 #X connect 18 0 1 0;
 #X coords 0 -1 1 1 58 40 1 100 100;
-#X restore 220 370 pd clrwl;
-#X obj 123 392 bng 15 50 10 0 empty empty empty 17 7 0 10 -262144 -1
+#X restore 273 321 pd clrwl;
+#X obj 176 343 bng 15 50 10 0 empty empty empty 17 7 0 10 -262144 -1
 -1;
 #X floatatom 102 691 5 0 0 0 dB - -;
 #N canvas 3194 353 338 612 gain 0;
@@ -615,15 +618,13 @@ saved to /tmp/;
 #X connect 14 0 15 0;
 #X connect 15 0 17 0;
 #X restore 30 690 pd gain;
-#X obj 70 436 unpack f f;
-#X text 316 318 button pressed: 1 \, button released: 0;
-#X text 293 367 clockwise rotation: 1 \, counterclockwise: -1;
-#X text 294 381 360° rotation are 24 ticks;
-#X text 281 300 Buttons;
+#X obj 123 396 unpack f f;
+#X text 226 458 button pressed: 1 \, button released: 0;
+#X text 350 341 360° rotation are 24 ticks;
+#X text 205 446 Buttons;
 #X text 88 102 Prints out information about the connected hardware
 ;
-#X text 195 426 Position on surface;
-#X text 269 341 Rotary controller;
+#X text 325 299 Rotary controller;
 #X text 57 75 1 starts polling data \, 0 stops it.;
 #N canvas 175 211 475 752 LED 0;
 #X obj 30 710 outlet;
@@ -700,7 +701,7 @@ patches to see the synthesis in action.;
 #X connect 2 0 1 0;
 #X connect 2 0 3 0;
 #X restore 496 738 pd set;
-#X obj 22 728 cnv 15 540 40 empty empty empty 20 12 0 14 -255794 -66577
+#X obj 20 728 cnv 15 540 40 empty empty empty 20 12 0 14 -255794 -66577
 0;
 #X obj 31 770 dac~;
 #X obj 31 739 hip~ 4;
@@ -723,11 +724,39 @@ DC-offset with a lowpass filter., f 70;
 and data output of the object for better undserstanding and debugging.
 , f 64;
 #X floatatom 229 269 5 0 0 1 Samples - -;
-#X text 320 264 Size of ringbuffer;
-#X obj 70 240 route position rotary button latency;
-#X text 225 441 Range: 0 to 1 0 \, 0 is in the left bottom of the surface
--1 if no touch is detected;
-#X text 329 275 actual latency is around half of this;
+#X text 310 264 Size of ringbuffer;
+#X text 329 277 actual latency is around half of this;
+#X text 228 376 Touch position on surface;
+#X obj 571 43 cnv 15 270 800 empty empty empty 20 12 0 14 -228856 -66577
+0;
+#X obj 752 372 chair.gesture;
+#X obj 601 709 chair.gain~;
+#X obj 593 546 chair.feedback-cancellation~;
+#X obj 591 397 chair.hex-mapping;
+#X obj 591 419 chair.hex-tuning;
+#X text 576 354 Process position data:;
+#X obj 592 311 chair.rotary-limit-range;
+#X text 577 290 Process rotary data:;
+#X text 575 526 Remove feedback:;
+#X text 573 149 Substitute for unavailable hardware:;
+#X obj 594 597 chair.peak-hold~;
+#X text 574 578 Envelope with zero latency:;
+#X text 572 689 Gain control with clipping warner:;
+#X obj 70 240 route button position rotary latency;
+#X text 574 49 This collumn introduces useful abstractions in the context
+of the process left of it., f 43;
+#X text 572 440 Use buttons to transpose:;
+#X obj 591 457 chair.transpose-octave;
+#X obj 589 170 faketickle~;
+#X obj 594 668 chair.dynamics~;
+#X text 574 649 Compressor and expander:;
+#X text 580 789 A complete list of abstractions is in;
+#X obj 603 810 chair.intro;
+#X text 350 313 clockwise rotation: 1 \, counterclockwise: -1, f 23
+;
+#X text 267 392 range: 0 to 1 0 0 is in the left bottom of the surface
+-1 if no touch is detected, f 41;
+#X obj 591 373 chair.capsense;
 #X connect 7 0 25 0;
 #X connect 10 0 11 0;
 #X connect 10 1 26 0;
@@ -741,21 +770,21 @@ and data output of the object for better undserstanding and debugging.
 #X connect 19 0 18 1;
 #X connect 20 0 30 1;
 #X connect 20 0 29 0;
-#X connect 21 0 41 0;
+#X connect 21 0 39 0;
 #X connect 22 0 21 0;
 #X connect 23 0 21 1;
 #X connect 25 0 22 0;
 #X connect 25 1 18 0;
-#X connect 25 1 61 0;
-#X connect 30 0 50 0;
-#X connect 30 2 43 0;
+#X connect 25 1 75 0;
+#X connect 30 0 48 0;
+#X connect 30 2 41 0;
 #X connect 31 0 8 0;
 #X connect 31 1 9 0;
-#X connect 40 0 25 0;
-#X connect 41 0 30 0;
-#X connect 50 0 49 0;
-#X connect 50 0 49 1;
-#X connect 61 0 12 0;
-#X connect 61 1 10 0;
-#X connect 61 2 14 0;
-#X connect 61 3 59 0;
+#X connect 38 0 25 0;
+#X connect 39 0 30 0;
+#X connect 48 0 47 0;
+#X connect 48 0 47 1;
+#X connect 75 0 14 0;
+#X connect 75 1 12 0;
+#X connect 75 2 10 0;
+#X connect 75 3 57 0;
