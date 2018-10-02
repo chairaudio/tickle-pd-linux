@@ -1,4 +1,4 @@
-#N canvas 627 244 853 857 10;
+#N canvas 627 244 848 857 10;
 #X declare -lib pddp;
 #X obj 19 483 cnv 15 540 40 empty empty empty 20 12 0 14 -103858 -66577
 0;
@@ -758,7 +758,7 @@ and data output of the object for better undserstanding and debugging.
 #X text 574 49 This column introduces useful abstractions in the context
 of the process left of it., f 43;
 #X text 576 87 If these objects won't create you may want to add the
-path to the search paths.;
+path to the search paths., f 42;
 #X connect 7 0 25 0;
 #X connect 10 0 11 0;
 #X connect 10 1 26 0;
@@ -777,6 +777,7 @@ path to the search paths.;
 #X connect 23 0 21 1;
 #X connect 25 0 22 0;
 #X connect 25 1 75 0;
+#X connect 25 1 18 0;
 #X connect 30 0 48 0;
 #X connect 30 2 41 0;
 #X connect 31 0 8 0;
@@ -787,6 +788,5 @@ path to the search paths.;
 #X connect 48 0 47 1;
 #X connect 75 0 14 0;
 #X connect 75 1 12 0;
-#X connect 75 1 17 0;
 #X connect 75 2 10 0;
 #X connect 75 3 57 0;
