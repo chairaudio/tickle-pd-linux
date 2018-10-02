@@ -6,6 +6,8 @@ using tickle::DeviceHandle;
 using tickle::NormalizedPosition;
 using tickle::Position;
 
+#include <fmt/format.h>
+
 Client::Client() {
     _ring_buffer.fill(0);
 }
@@ -42,12 +44,15 @@ Client::FrameChanges Client::compare_frames() {
     if (current.x == 255 || current.y == 255) {
         current.x = _previous_frame.x;
         current.y = _previous_frame.y;
-    }
-    if (current.x != _previous_frame.x || current.y != _previous_frame.y ||
-        (changes.touch && is_down)) {
-        changes.position = {current.x / 255.f, current.y / 255.f};
-    } else {
+        // fmt::print("255 255\n");
         changes.position = {};
+    } else {
+        if (current.x != _previous_frame.x || current.y != _previous_frame.y ||
+            (changes.touch && is_down)) {
+            changes.position = {current.x / 255.f, current.y / 255.f};
+        } else {
+            changes.position = {};
+        }
     }
 
     if (changes.touch && not is_down) {
