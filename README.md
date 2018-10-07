@@ -10,7 +10,7 @@ meson
 
 # submodules
 
-The helpfile is bound into the repository as a submodule. So before you start to this:
+The helpfile is a submodule. It needs to be pulled before building:
 
 $ git submodule update --init
 
