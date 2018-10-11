@@ -8,6 +8,12 @@ and is pushed automatically to https://github.com/chairaudio/tickle-pd-linux
 
 meson
 
+# submodules
+
+The helpfile is a submodule. It needs to be pulled before building:
+
+$ git submodule update --init
+
 # configure
 
 $ meson build
