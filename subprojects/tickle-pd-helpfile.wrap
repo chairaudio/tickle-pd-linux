@@ -1,0 +1,4 @@
+[wrap-git]
+directory = tickle-pd-helpfile
+url = https://gitlab.chair.audio/chair-audio/tickle-pd-helpfile.git
+revision = head

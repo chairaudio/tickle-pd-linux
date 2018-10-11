@@ -38,10 +38,8 @@ shared_module('tickle~',
   ]
 )
 
-install_data(
-  'data/tickle~-help.pd',
-  install_dir : install_dir
-)
+tickle_pd_helpfile_dep = dependency('tickle_pd_helpfile', fallback : ['tickle-pd-helpfile', 'tickle_pd_helpfile_dep'])
+meson.add_install_script('data/copy-helpfile.py', install_dir)
 
 
 
