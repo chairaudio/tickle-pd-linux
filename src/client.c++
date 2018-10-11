@@ -39,12 +39,10 @@ Client::FrameChanges Client::compare_frames() {
         changes.touch = {};
     }
 
-    // workaround
-    // override with previous position?
-    if (current.x == 255 || current.y == 255) {
+    // there hase been an error in CapSense_GetCentroidPos
+    if (current.x == 0 || current.y == 0) {
         current.x = _previous_frame.x;
         current.y = _previous_frame.y;
-        // fmt::print("255 255\n");
         changes.position = {};
     } else {
         if (current.x != _previous_frame.x || current.y != _previous_frame.y ||
