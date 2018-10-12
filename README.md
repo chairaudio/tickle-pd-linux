@@ -18,7 +18,7 @@ A manual submodule update (git submodule update --init) should not be necessary.
 $ meson build
 
 # optional: set custom installation directory
-Default installation path is `~/pd-externals/`
+Default installation path is `~/Documents/Pd/externals/`
 if you are fine with this go to build and install. 
 alternatively configure a custom installation directory like this:
 
