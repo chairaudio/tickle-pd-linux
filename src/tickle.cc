@@ -133,12 +133,6 @@ static void tickle_bang(tickle_t* self) {
                         position_out.data());
     }
 
-    if (changes.touch) {
-        std::array<t_atom, 1> touch_out;
-        SETFLOAT(&touch_out[0], changes.touch.value() ? 1.0 : 0.0);
-        outlet_anything(self->data_out, gensym("touch"), 1, touch_out.data());
-    }
-
     for (auto change : changes.rotary) {
         if (not change) {
             continue;
