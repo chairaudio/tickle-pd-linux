@@ -50,7 +50,7 @@ class tickle::Client {
 
     std::mutex _frame_mutex;
     isoc_frame _current_frame, _previous_frame;
-
+    FrameChanges _previous_changes;
     DSPState _dsp_state{DSPState::kUndefined};
     void _copy_samples();
 

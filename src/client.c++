@@ -34,27 +34,30 @@ Client::FrameChanges Client::compare_frames() {
     bool was_down = _previous_frame.x_is_valid && _previous_frame.y_is_valid;
     bool is_down = current.x_is_valid && current.y_is_valid;
     if (was_down != is_down) {
-        changes.touch = is_down;
+        changes.touch = {};  // is_down;
     } else {
         changes.touch = {};
     }
 
+    changes.position = {};
     // there hase been an error in CapSense_GetCentroidPos
     if (current.x == 0 || current.y == 0) {
-        current.x = _previous_frame.x;
-        current.y = _previous_frame.y;
-        changes.position = {};
+        if (is_down) {
+            current.x = _previous_frame.x;
+            current.y = _previous_frame.y;
+        } else {
+            if (was_down) {
+                changes.position = {-1.f, -1.f};
+            }
+        }
     } else {
-        if (current.x != _previous_frame.x || current.y != _previous_frame.y ||
-            (changes.touch && is_down)) {
-            changes.position = {current.x / 255.f, current.y / 255.f};
+        if (current.x != _previous_frame.x || current.y != _previous_frame.y) {
+            if (is_down) {
+                changes.position = {current.x / 255.f, current.y / 255.f};
+            }
         } else {
             changes.position = {};
         }
-    }
-
-    if (changes.touch && not is_down) {
-        changes.position = {-1.f, -1.f};
     }
 
     for (int8_t rotary_index = 0; rotary_index < int8_t(changes.rotary.size());
@@ -87,7 +90,14 @@ Client::FrameChanges Client::compare_frames() {
     }
 
     _previous_frame = current;
-
+    bool override_change = _previous_changes.position.has_value() &&
+                           _previous_changes.position.value().x == -1 &&
+                           not changes.position.has_value();
+    _previous_changes = changes;
+    if (override_change) {
+        _previous_changes.position = {-1, -1};
+        _previous_frame.x_is_valid = false;
+    }
     return changes;
 }
 
