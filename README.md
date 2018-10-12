@@ -10,10 +10,9 @@ and is pushed automatically to https://github.com/chairaudio/tickle-pd-linux
 
 # submodules
 
-The helpfile is a submodule. It needs to be pulled before building:
-```
-$ git submodule update --init
-```
+The helpfile is a submodule. The newest commit from the tickle-pd-helpfile repository will be pulled automatically before building.
+A manual submodule update (git submodule update --init) should not be necessary.
+
 # configure
 
 $ meson build
