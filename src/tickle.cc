@@ -244,6 +244,11 @@ void tickle_led(tickle_t* self, float index, float r, float g, float b) {
 void tickle_set_latency(tickle_t* self, float value) {
     auto n_ring_chunks =
         static_cast<uint16_t>(value / Client::RingbufferChunkSize);
+    if (n_ring_chunks == 0 || n_ring_chunks > Client::MaxRingbufferChunks) {
+        error("latency is outside of accepted range [%d,%d]",
+              Client::RingbufferChunkSize, Client::MaxRingbufferCapacity);
+        return;
+    }
     self->client->set_n_ring_chunks(n_ring_chunks);
 }
 
