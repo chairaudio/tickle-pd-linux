@@ -236,6 +236,12 @@ void tickle_led(tickle_t* self, float index, float r, float g, float b) {
     shared_device_manager.set_color(index, color);
 }
 
+#include <iostream>
+
+void tickle_set_latency(tickle_t* self, float value) {
+    std::cout << __PRETTY_FUNCTION__ << ": " << value << std::endl;
+}
+
 void tickle_tilde_setup() {
     tickle_tilde_class = reinterpret_cast<t_class*>(class_new(
         gensym("tickle~"), (t_newmethod)tickle_new, (t_method)tickle_delete,
@@ -251,6 +257,8 @@ void tickle_tilde_setup() {
                     A_FLOAT, (t_atomtype)0);
     class_addmethod(tickle_tilde_class, (t_method)tickle_led, gensym("led"),
                     A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, (t_atomtype)0);
+    class_addmethod(tickle_tilde_class, (t_method)tickle_set_latency,
+                    gensym("latency"), A_FLOAT, (t_atomtype)0);
     std::this_thread::sleep_for(1s);
 
     print_external_info();
