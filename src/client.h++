@@ -44,6 +44,12 @@ class tickle::Client {
     void fill_audio_buffer(float* out, uint32_t n_samples);
 
     uint16_t get_ring_size() const { return _ring_size; }
+    void set_n_ring_chunks(uint16_t);
+
+    static constexpr uint16_t RingbufferChunkSize{96};
+    static constexpr uint16_t MaxRingbufferChunks{24};
+    static constexpr uint16_t MaxRingbufferCapacity{
+        RingbufferChunkSize * MaxRingbufferChunks};  // 2304
 
   private:
     std::optional<DeviceHandle> _device_handle;
@@ -54,10 +60,6 @@ class tickle::Client {
     DSPState _dsp_state{DSPState::kUndefined};
     void _copy_samples();
 
-    static constexpr uint16_t RingbufferChunkSize{96};
-    static constexpr uint16_t MaxRingbufferChunks{24};
-    static constexpr uint16_t MaxRingbufferCapacity{
-        RingbufferChunkSize * MaxRingbufferChunks};  // 2304
     std::atomic<uint16_t> _ring_size{RingbufferChunkSize};
     std::array<int16_t, MaxRingbufferCapacity> _ring_buffer;
     std::atomic<int32_t> _read_index{0}, _write_index{0};

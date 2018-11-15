@@ -20,6 +20,7 @@
 
 #include <m_pd.h>
 
+#include <iostream>
 #include <cstring>
 #include <chrono>
 #include <thread>
@@ -236,10 +237,14 @@ void tickle_led(tickle_t* self, float index, float r, float g, float b) {
     shared_device_manager.set_color(index, color);
 }
 
-#include <iostream>
+/**
+ * accepts latency in samples
+ */
 
 void tickle_set_latency(tickle_t* self, float value) {
-    std::cout << __PRETTY_FUNCTION__ << ": " << value << std::endl;
+    auto n_ring_chunks =
+        static_cast<uint16_t>(value / Client::RingbufferChunkSize);
+    self->client->set_n_ring_chunks(n_ring_chunks);
 }
 
 void tickle_tilde_setup() {

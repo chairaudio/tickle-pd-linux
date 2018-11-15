@@ -117,6 +117,16 @@ void Client::_copy_samples() {
     }
 }
 
+void Client::set_n_ring_chunks(uint16_t n_chunks) {
+    if (n_chunks > MaxRingbufferChunks || n_chunks == 0) {
+        return;
+    }
+
+    std::lock_guard guard{_frame_mutex};
+    _ring_size = n_chunks * RingbufferChunkSize;
+    _dsp_state = DSPState::kWillStart;
+}
+
 void Client::fill_audio_buffer(float* out, uint32_t n_samples) {
     if (_dsp_state == DSPState::kUndefined) {
         return;
@@ -156,11 +166,12 @@ void Client::fill_audio_buffer(float* out, uint32_t n_samples) {
         return;
     }
 
+    /*
     if (distance < 0 || distance > _ring_size) {
         if (_ring_size == MaxRingbufferCapacity) {
             return;
         }
         _ring_size += RingbufferChunkSize;
         _dsp_state = DSPState::kWillStart;
-    }
+    } */
 }
