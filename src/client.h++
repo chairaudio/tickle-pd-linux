@@ -46,10 +46,10 @@ class tickle::Client {
     uint16_t get_ring_size() const { return _ring_size; }
     void set_n_ring_chunks(uint16_t);
 
-    static constexpr uint16_t RingbufferChunkSize{96};
-    static constexpr uint16_t MaxRingbufferChunks{24};
-    static constexpr uint16_t MaxRingbufferCapacity{
-        RingbufferChunkSize * MaxRingbufferChunks};  // 2304
+    static constexpr uint16_t RingbufferChunkSize{48};
+    static constexpr uint16_t MaxRingbufferChunks{64};
+    static constexpr uint16_t MaxRingbufferCapacity{RingbufferChunkSize *
+                                                    MaxRingbufferChunks};
 
   private:
     std::optional<DeviceHandle> _device_handle;
