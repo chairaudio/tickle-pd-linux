@@ -63,5 +63,5 @@ class tickle::Client {
     std::atomic<uint16_t> _ring_size{RingbufferChunkSize};
     std::array<int16_t, MaxRingbufferCapacity> _ring_buffer;
     std::atomic<int32_t> _read_index{0}, _write_index{0};
-    bool _skip{true};
+    std::atomic<bool> _skip{false};
 };

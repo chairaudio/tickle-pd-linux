@@ -72,15 +72,16 @@ void SharedDeviceManager::_spawn() {
                 // continue;
             }
         }
+
         if (current_frame.number == previous_frame.number) {
             continue;
         }
+        // fmt::print("{} {}\n", current_frame.number, previous_frame.number);
 
         for (auto& client : _clients) {
             client->copy_frame(current_frame);
         }
         previous_frame = current_frame;
-        std::this_thread::sleep_for(1500us);
     }
 }
 

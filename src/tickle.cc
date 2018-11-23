@@ -21,6 +21,7 @@
 #include <m_pd.h>
 
 #include <iostream>
+using std::cout;
 #include <cstring>
 #include <chrono>
 #include <thread>
@@ -252,6 +253,10 @@ void tickle_set_latency(tickle_t* self, float value) {
     self->client->set_n_ring_chunks(n_ring_chunks);
 }
 
+void tickle_testsignal(tickle_t* self) {
+    shared_device_manager.dim(0);
+}
+
 void tickle_tilde_setup() {
     tickle_tilde_class = reinterpret_cast<t_class*>(class_new(
         gensym("tickle~"), (t_newmethod)tickle_new, (t_method)tickle_delete,
@@ -269,6 +274,8 @@ void tickle_tilde_setup() {
                     A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, (t_atomtype)0);
     class_addmethod(tickle_tilde_class, (t_method)tickle_set_latency,
                     gensym("latency"), A_FLOAT, (t_atomtype)0);
+    class_addmethod(tickle_tilde_class, (t_method)tickle_testsignal,
+                    gensym("testsignal"), (t_atomtype)0);
     std::this_thread::sleep_for(1s);
 
     print_external_info();

@@ -7,6 +7,8 @@ using tickle::NormalizedPosition;
 using tickle::Position;
 
 #include <fmt/format.h>
+#include <iostream>
+using std::cout;
 
 Client::Client() {
     _ring_buffer.fill(0);
@@ -40,7 +42,8 @@ Client::FrameChanges Client::compare_frames() {
     }
 
     changes.position = {};
-    // there hase been an error in CapSense_GetCentroidPos
+
+    // there has been an error in CapSense_GetCentroidPos
     if (current.x == 0 || current.y == 0) {
         if (is_down) {
             current.x = _previous_frame.x;
@@ -110,8 +113,13 @@ void Client::_copy_samples() {
         return;
     }
 
-    std::lock_guard guard{_frame_mutex};
-    for (auto idx = 0; idx < _current_frame.n_samples; ++idx) {
+    //     std::lock_guard guard{_frame_mutex};
+    auto n_samples = _current_frame.n_samples;
+    if (_skip && n_samples > RingbufferChunkSize) {
+        n_samples = RingbufferChunkSize;
+        // cout << "skip\n";
+    }
+    for (auto idx = 0; idx < n_samples; ++idx) {
         _ring_buffer[_write_index % _ring_size] = _current_frame.samples[idx];
         ++_write_index;
     }
@@ -132,7 +140,7 @@ void Client::fill_audio_buffer(float* out, uint32_t n_samples) {
         return;
     }
 
-    std::lock_guard guard{_frame_mutex};
+    // std::lock_guard guard{_frame_mutex};
     if (_dsp_state == DSPState::kWillStart) {
         _read_index = -_ring_size / 2;
         _write_index = 0;
@@ -143,9 +151,12 @@ void Client::fill_audio_buffer(float* out, uint32_t n_samples) {
 
     int32_t distance = _write_index - _read_index;
     int32_t target_distance = _ring_size / 2;
+    _skip = distance > target_distance;
+    if (_skip) {
+        // cout << distance << " : " << target_distance << "\n";
+    }
 
     float sample{0};
-    bool needs_skip = distance < target_distance;
     for (uint32_t sample_idx = 0; sample_idx < n_samples; ++sample_idx) {
         if (_read_index >= 0) {
             sample =
@@ -153,25 +164,20 @@ void Client::fill_audio_buffer(float* out, uint32_t n_samples) {
                 32768.f;
         }
         out[sample_idx] = sample;
-
-        // read less than required
-        if (needs_skip && _read_index >= 0) {
-            needs_skip = false;
-        } else {
-            ++_read_index;
-        }
-    }
-
-    if (_read_index < 0) {
-        return;
+        ++_read_index;
     }
 
     /*
-    if (distance < 0 || distance > _ring_size) {
-        if (_ring_size == MaxRingbufferCapacity) {
+        if (_read_index < 0) {
             return;
         }
-        _ring_size += RingbufferChunkSize;
-        _dsp_state = DSPState::kWillStart;
-    } */
+
+
+        if (distance < 0 || distance > _ring_size) {
+            if (_ring_size == MaxRingbufferCapacity) {
+                return;
+            }
+            _ring_size += RingbufferChunkSize;
+            _dsp_state = DSPState::kWillStart;
+        } */
 }
