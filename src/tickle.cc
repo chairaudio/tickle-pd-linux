@@ -257,6 +257,10 @@ void tickle_testsignal(tickle_t* self) {
     shared_device_manager.dim(0);
 }
 
+void tickle_run_tests(tickle_t* self) {
+    self->client->run_tests();
+}
+
 void tickle_tilde_setup() {
     tickle_tilde_class = reinterpret_cast<t_class*>(class_new(
         gensym("tickle~"), (t_newmethod)tickle_new, (t_method)tickle_delete,
@@ -276,6 +280,8 @@ void tickle_tilde_setup() {
                     gensym("latency"), A_FLOAT, (t_atomtype)0);
     class_addmethod(tickle_tilde_class, (t_method)tickle_testsignal,
                     gensym("testsignal"), (t_atomtype)0);
+    class_addmethod(tickle_tilde_class, (t_method)tickle_run_tests,
+                    gensym("tests"), (t_atomtype)0);
     std::this_thread::sleep_for(1s);
 
     print_external_info();

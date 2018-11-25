@@ -1,6 +1,6 @@
 project('tickle-pd', 'cpp',
   default_options : [
-    'cpp_std=c++1z',
+    'cpp_std=c++17',
     'default_library=static',
     'install_dir=/home/@0@/Documents/Pd/externals'.format(run_command('whoami').stdout().strip())
   ]

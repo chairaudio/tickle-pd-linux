@@ -16,6 +16,8 @@ namespace fs = std::experimental::filesystem;
 #include <chrono>
 using namespace std::chrono_literals;
 #include <experimental/vector>
+#include <iostream>
+using std::cout;
 
 #include <fcntl.h>
 #include <stdio.h>
@@ -76,8 +78,13 @@ void SharedDeviceManager::_spawn() {
         if (current_frame.number == previous_frame.number) {
             continue;
         }
+        if ((current_frame.number - 1) != previous_frame.number) {
+            cout << "drop\n";
+        }
+
         // fmt::print("{} {}\n", current_frame.number, previous_frame.number);
 
+        std::this_thread::sleep_for(10us);
         for (auto& client : _clients) {
             client->copy_frame(current_frame);
         }

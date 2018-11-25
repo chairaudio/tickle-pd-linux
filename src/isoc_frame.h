@@ -15,4 +15,7 @@ struct __attribute__((__packed__)) isoc_frame {
     uint8_t y;
     uint8_t quad_encoder[3];
     uint8_t padding[17];
+
+    isoc_frame() = default;
+    isoc_frame(const isoc_frame& rhs) = default;
 };

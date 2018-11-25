@@ -14,6 +14,18 @@ Client::Client() {
     _ring_buffer.fill(0);
 }
 
+void Client::run_tests() {
+    _verify_read_idx_record_buffer();
+}
+
+void Client::_verify_read_idx_record_buffer() {
+    cout << "recorded " << _read_idx_record_buffer_idx << " samples\n";
+    for (auto number : _read_idx_record_buffer) {
+        cout << number << "\n";
+    }
+    cout << "recorded " << _read_idx_record_buffer_idx << " samples\n";
+}
+
 void Client::notify_device_was_connected(DeviceHandle device_handle) {
     _device_handle = device_handle;
 }
@@ -23,6 +35,7 @@ void Client::notify_device_was_disconnected() {
 }
 
 void Client::copy_frame(const isoc_frame& frame) {
+    std::lock_guard frame_guard{_frame_mutex};
     _current_frame = frame;
     _copy_samples();
 }
@@ -30,7 +43,6 @@ void Client::copy_frame(const isoc_frame& frame) {
 Client::FrameChanges Client::compare_frames() {
     FrameChanges changes;
 
-    // TODO: lock current frame b4 copy
     isoc_frame current = _current_frame;
 
     bool was_down = _previous_frame.x_is_valid && _previous_frame.y_is_valid;
@@ -115,9 +127,9 @@ void Client::_copy_samples() {
 
     //     std::lock_guard guard{_frame_mutex};
     auto n_samples = _current_frame.n_samples;
-    if (_skip && n_samples > RingbufferChunkSize) {
+    if (_skip_write && n_samples > RingbufferChunkSize) {
         n_samples = RingbufferChunkSize;
-        // cout << "skip\n";
+        // cout << "_skip_write " << _rw_distance << "\n";
     }
     for (auto idx = 0; idx < n_samples; ++idx) {
         _ring_buffer[_write_index % _ring_size] = _current_frame.samples[idx];
@@ -140,7 +152,7 @@ void Client::fill_audio_buffer(float* out, uint32_t n_samples) {
         return;
     }
 
-    // std::lock_guard guard{_frame_mutex};
+    std::lock_guard frame_guard{_frame_mutex};
     if (_dsp_state == DSPState::kWillStart) {
         _read_index = -_ring_size / 2;
         _write_index = 0;
@@ -149,11 +161,20 @@ void Client::fill_audio_buffer(float* out, uint32_t n_samples) {
         }
     }
 
-    int32_t distance = _write_index - _read_index;
-    int32_t target_distance = _ring_size / 2;
-    _skip = distance > target_distance;
-    if (_skip) {
+    _rw_distance = _write_index - _read_index;
+    int32_t max_distance = _ring_size * 3 / 4;
+    _skip_write = _rw_distance > max_distance;
+    if (_skip_write) {
         // cout << distance << " : " << target_distance << "\n";
+    }
+
+    int32_t min_distance = _ring_size * 1 / 4;
+    _skip_read = _rw_distance < min_distance;
+    if (_skip_read) {
+        cout << "_skip_read " << _rw_distance << "\n";
+        if (_rw_distance < 0) {
+            cout << "_skip_read ouch\n";
+        }
     }
 
     float sample{0};
@@ -164,6 +185,10 @@ void Client::fill_audio_buffer(float* out, uint32_t n_samples) {
                 32768.f;
         }
         out[sample_idx] = sample;
+        if (_skip_read) {
+            _skip_read = false;
+            continue;
+        }
         ++_read_index;
     }
 

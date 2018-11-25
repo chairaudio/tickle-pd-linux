@@ -47,21 +47,29 @@ class tickle::Client {
     void set_n_ring_chunks(uint16_t);
 
     static constexpr uint16_t RingbufferChunkSize{48};
-    static constexpr uint16_t MaxRingbufferChunks{64};
+    static constexpr uint16_t MaxRingbufferChunks{1024};
     static constexpr uint16_t MaxRingbufferCapacity{RingbufferChunkSize *
                                                     MaxRingbufferChunks};
+
+    void run_tests();
 
   private:
     std::optional<DeviceHandle> _device_handle;
 
     std::mutex _frame_mutex;
     isoc_frame _current_frame, _previous_frame;
+
     FrameChanges _previous_changes;
     DSPState _dsp_state{DSPState::kUndefined};
     void _copy_samples();
 
     std::atomic<uint16_t> _ring_size{RingbufferChunkSize};
     std::array<int16_t, MaxRingbufferCapacity> _ring_buffer;
-    std::atomic<int32_t> _read_index{0}, _write_index{0};
-    std::atomic<bool> _skip{false};
+    std::atomic<int32_t> _read_index{0}, _write_index{0}, _rw_distance{0};
+    std::atomic<bool> _skip_write{false}, _skip_read{false};
+
+    /** debug stuff */
+    std::array<int32_t, 48000 * 60> _read_idx_record_buffer;
+    int32_t _read_idx_record_buffer_idx{0};
+    void _verify_read_idx_record_buffer();
 };
