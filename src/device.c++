@@ -9,8 +9,6 @@ using tickle::Device;
 #include <sys/stat.h>
 #include <sys/ioctl.h>
 
-#include <fmt/format.h>
-
 Device::Device() {}
 
 Device::~Device() {}

@@ -199,9 +199,10 @@ static t_int* tickle_dsp_perform_audio_out(t_int* w) {
     t_sample* out = (t_sample*)(w[2]);
     int n_samples = (int)(w[3]);
 
-    self->client->fill_audio_buffer(out, n_samples);
     if (not self->is_active || not self->client->has_device()) {
         memset(out, 0, n_samples * sizeof(t_sample));
+    } else {
+        self->client->fill_audio_buffer(out, n_samples);
     }
 
     return (w + 4);
@@ -257,9 +258,7 @@ void tickle_testsignal(tickle_t* self) {
     shared_device_manager.dim(0);
 }
 
-void tickle_run_tests(tickle_t* self) {
-    self->client->run_tests();
-}
+void tickle_run_tests(tickle_t* self) {}
 
 void tickle_tilde_setup() {
     tickle_tilde_class = reinterpret_cast<t_class*>(class_new(

@@ -9,8 +9,6 @@ using tickle::DeviceHandle;
 using tickle::Client;
 using tickle::ClientHandle;
 
-#include <fmt/format.h>
-#include <fmt/ostream.h>
 #include <experimental/filesystem>
 namespace fs = std::experimental::filesystem;
 #include <chrono>
@@ -57,7 +55,8 @@ void SharedDeviceManager::_spawn() {
         isoc_frame current_frame;
         auto result = ioctl(_kmod_fd, TICKLE_IOC_READ_FRAME, &current_frame);
         if (result != 0) {
-            fmt::print("err: TICKLE_IOC_READ_FRAME failed {}\n", result);
+            cout << "err: TICKLE_IOC_READ_FRAME failed with result " << result
+                 << "\n";
             if (_device->is_connected()) {
                 _on_device_disconnection();
                 did_post_error = false;
@@ -78,13 +77,7 @@ void SharedDeviceManager::_spawn() {
         if (current_frame.number == previous_frame.number) {
             continue;
         }
-        if ((current_frame.number - 1) != previous_frame.number) {
-            cout << "drop\n";
-        }
 
-        // fmt::print("{} {}\n", current_frame.number, previous_frame.number);
-
-        std::this_thread::sleep_for(10us);
         for (auto& client : _clients) {
             client->copy_frame(current_frame);
         }
@@ -111,7 +104,7 @@ void SharedDeviceManager::_connect_to_kmod() {
 
     if (not fs::exists(tickle_character_device)) {
         static bool did_post_error{false};
-        fmt::print("{} does not exist\n", tickle_character_device);
+        cout << tickle_character_device << " does not exist\n";
         if (not did_post_error) {
             did_post_error = true;
             error("tickle kernel module is not loaded");
@@ -124,7 +117,7 @@ void SharedDeviceManager::_connect_to_kmod() {
 
     _kmod_fd = open(tickle_character_device.c_str(), O_RDWR);
     if (_kmod_fd == -1) {
-        fmt::print("cannot open {}\n", tickle_character_device);
+        cout << "cannot open " << tickle_character_device << "\n";
         return;
     }
 
@@ -163,8 +156,7 @@ void SharedDeviceManager::set_color(uint32_t index, uint32_t color) {
     *color_ptr = color;
     auto result = ioctl(_kmod_fd, TICKLE_IOC_SET_COLOR, &buffer);
     if (result != 0) {
-        fmt::print("{} {} | {} {}\n", __PRETTY_FUNCTION__, result, *index_ptr,
-                   *color_ptr);
+        cout << __PRETTY_FUNCTION__ << " failed with result " << result << "\n";
     }
 }
 

@@ -6,10 +6,7 @@ project('tickle-pd', 'cpp',
   ]
 )
 
-fmt_dep = dependency('fmt', fallback : ['fmt', 'fmt_dep'])
-stdcppfs_dep = meson.get_compiler('cpp').find_library('stdc++fs',
-  dirs : ['/usr/lib/gcc/x86_64-linux-gnu/7/']
-)
+stdcppfs_dep = meson.get_compiler('cpp').find_library('stdc++fs')
 
 install_dir = get_option('install_dir')
 if install_dir.startswith('~')
@@ -34,7 +31,7 @@ shared_module('tickle~',
   name_suffix : 'pd_linux',
   name_prefix : '',
   dependencies : [
-    fmt_dep, stdcppfs_dep
+    stdcppfs_dep
   ]
 )
 

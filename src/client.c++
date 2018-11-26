@@ -6,7 +6,6 @@ using tickle::DeviceHandle;
 using tickle::NormalizedPosition;
 using tickle::Position;
 
-#include <fmt/format.h>
 #include <iostream>
 using std::cout;
 
@@ -14,17 +13,7 @@ Client::Client() {
     _ring_buffer.fill(0);
 }
 
-void Client::run_tests() {
-    _verify_read_idx_record_buffer();
-}
-
-void Client::_verify_read_idx_record_buffer() {
-    cout << "recorded " << _read_idx_record_buffer_idx << " samples\n";
-    for (auto number : _read_idx_record_buffer) {
-        cout << number << "\n";
-    }
-    cout << "recorded " << _read_idx_record_buffer_idx << " samples\n";
-}
+void Client::run_tests() {}
 
 void Client::notify_device_was_connected(DeviceHandle device_handle) {
     _device_handle = device_handle;
@@ -36,6 +25,7 @@ void Client::notify_device_was_disconnected() {
 
 void Client::copy_frame(const isoc_frame& frame) {
     std::lock_guard frame_guard{_frame_mutex};
+
     _current_frame = frame;
     _copy_samples();
 }
@@ -189,6 +179,7 @@ void Client::fill_audio_buffer(float* out, uint32_t n_samples) {
             _skip_read = false;
             continue;
         }
+
         ++_read_index;
     }
 

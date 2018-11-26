@@ -67,9 +67,4 @@ class tickle::Client {
     std::array<int16_t, MaxRingbufferCapacity> _ring_buffer;
     std::atomic<int32_t> _read_index{0}, _write_index{0}, _rw_distance{0};
     std::atomic<bool> _skip_write{false}, _skip_read{false};
-
-    /** debug stuff */
-    std::array<int32_t, 48000 * 60> _read_idx_record_buffer;
-    int32_t _read_idx_record_buffer_idx{0};
-    void _verify_read_idx_record_buffer();
 };
